@@ -23,6 +23,10 @@ public class ProductController {
                .addOnSuccessListener(aVoid -> listener.onSuccess())
                .addOnFailureListener(e -> listener.onFailure(e.getMessage()));
     }
+    public interface OnProductAddedListener {
+        void onSuccess();
+        void onFailure(String message);
+    }
     public void loadAllProducts(OnProductLoadListener listener) {
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -41,13 +45,27 @@ public class ProductController {
             }
         });
     }
-
     public interface OnProductLoadListener {
         void onLoaded(List<Product> products);
         void onFailed(String errorMessage);
     }
+    public void updateProduct(Product product, OnProductUpdatedListener listener) {
+        databaseReference.child(product.getProduct_id()).setValue(product)
+                .addOnSuccessListener(aVoid -> listener.onSuccess())
+                .addOnFailureListener(e -> listener.onFailure(e.getMessage()));
+    }
+    public interface OnProductUpdatedListener {
+        void onSuccess();
+        void onFailure(String message);
+    }
+    public void deleteProduct(String productId, OnProductDeletedListener listener) {
+        databaseReference.child(productId)
+                .removeValue()
+                .addOnSuccessListener(unused -> listener.onSuccess())
+                .addOnFailureListener(e -> listener.onFailure(e.getMessage()));
+    }
 
-    public interface OnProductAddedListener {
+    public interface OnProductDeletedListener {
         void onSuccess();
         void onFailure(String message);
     }

@@ -13,13 +13,13 @@
         android:theme="@style/Theme.OnlineCoffeeShop"
         tools:targetApi="31">
         <activity
+            android:name=".view.product.UpdateProductActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.product.ProductDetailActivity"
             android:exported="false" />
         <activity
             android:name=".view.product.ProductListActivity"
-            android:exported="false" />
-        <activity
-            android:name=".view.product.UpdateProductActivity"
             android:exported="false" />
         <activity
             android:name=".view.product.AddProductActivity"
