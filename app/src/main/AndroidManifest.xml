@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Permissions -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,20 +16,41 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OnlineCoffeeShop"
         tools:targetApi="31">
+        <!-- Authentication Activities -->
+        <activity
+            android:name=".view.auth.LoginActivity"
+            android:exported="true"
+            android:theme="@style/Theme.OnlineCoffeeShop.NoActionBar" >
+             <intent-filter>
+                 <action android:name="android.intent.action.MAIN" />
+
+                 <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
+        </activity>
+        <activity
+            android:name=".view.auth.RegisterActivity"
+            android:exported="false"
+            android:theme="@style/Theme.OnlineCoffeeShop.NoActionBar" />
+
+        <!-- Profile Activity -->
+        <activity
+            android:name=".view.profile.ProfileActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity" />
+
+        <!-- Product Activities -->
         <activity
             android:name=".view.product.UpdateProductActivity"
             android:exported="false" />
         <activity
             android:name=".view.product.AddProductActivity"
             android:exported="false" />
+
+        <!-- Main Activity -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

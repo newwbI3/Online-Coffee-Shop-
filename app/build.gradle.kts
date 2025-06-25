@@ -44,6 +44,7 @@ dependencies {
     implementation(libs.credentials.play.services.auth)
     implementation(libs.googleid)
     implementation(libs.firebase.database)
+    implementation(libs.firebase.firestore)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -53,6 +54,7 @@ dependencies {
 
     implementation ("com.google.firebase:firebase-auth")
     implementation ("com.google.firebase:firebase-database")
+    implementation ("com.google.firebase:firebase-firestore")
     implementation ("com.google.firebase:firebase-storage")
 
     // UI & Tools
