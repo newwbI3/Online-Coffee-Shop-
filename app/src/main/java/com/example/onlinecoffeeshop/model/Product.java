@@ -5,16 +5,27 @@ public class Product {
     private String name;
     private String category_id;
     private double price;
+    private String description;
     private String image_url;
     private boolean is_active;
     private String created_at;
 
     public Product() { }
-    public Product(String product_id, String name, String category_id, double price, String image_url, boolean is_active, String created_at) {
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Product(String product_id, String name, String category_id, double price, String description, String image_url, boolean is_active, String created_at) {
         this.product_id = product_id;
         this.name = name;
         this.category_id = category_id;
         this.price = price;
+        this.description = description;
         this.image_url = image_url;
         this.is_active = is_active;
         this.created_at = created_at;

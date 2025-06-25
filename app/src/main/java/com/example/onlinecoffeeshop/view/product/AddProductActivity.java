@@ -1,7 +1,9 @@
 package com.example.onlinecoffeeshop.view.product;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -18,41 +20,59 @@ import com.example.onlinecoffeeshop.model.Product;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.UUID;
 
 public class AddProductActivity extends AppCompatActivity {
-private EditText edtName, edtCategoryId, edtPrice;
-private Button btnCreate;
-private ProductController productController;
+    private EditText edtName, edtCategoryId, edtDescription,edtPrice, edtImageUrl;
+    private CheckBox chkIsActive;
+    private Button btnAdd;
+    private ProductController productController;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_add_product);
 
+        // Bind UI
         edtName = findViewById(R.id.edtName);
         edtCategoryId = findViewById(R.id.edtCategoryId);
         edtPrice = findViewById(R.id.edtPrice);
-        btnCreate = findViewById(R.id.btnCreate);
+        edtImageUrl = findViewById(R.id.edtImageUrl);
+        edtDescription = findViewById(R.id.edtDescription);
+        chkIsActive = findViewById(R.id.chkIsActive);
+        btnAdd = findViewById(R.id.btnAction);
+
         productController = new ProductController();
 
-        btnCreate.setOnClickListener(v -> {
-            String name = edtName.getText().toString();
-            String categoryId = edtCategoryId.getText().toString();
-            double price = Double.parseDouble(edtPrice.getText().toString());
-            String createdAt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
-            String product_Id = "prd" + System.currentTimeMillis(); //initial simple ID
-            Product product = new Product(product_Id, name, categoryId, price, "", true, createdAt);
+        btnAdd.setOnClickListener(v -> {
+            String name = edtName.getText().toString().trim();
+            String categoryId = edtCategoryId.getText().toString().trim();
+            String priceStr = edtPrice.getText().toString().trim();
+            String description = edtDescription.getText().toString().trim();
+            String imageUrl = edtImageUrl.getText().toString().trim();
+            boolean isActive = chkIsActive.isChecked();
 
-            productController.addProduct(product, product_Id, new ProductController.OnProductAddedListener() {
+            if (TextUtils.isEmpty(name) || TextUtils.isEmpty(priceStr) || TextUtils.isEmpty(imageUrl)) {
+                Toast.makeText(this, "Please fill all required fields", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            double price = Double.parseDouble(priceStr);
+            String productId = UUID.randomUUID().toString();
+            String createdAt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+
+            Product product = new Product(productId, name, categoryId, price, description, imageUrl, isActive, createdAt);
+
+            productController.addProduct(product, productId, new ProductController.OnProductAddedListener() {
                 @Override
                 public void onSuccess() {
-                    //
-                    Toast.makeText(AddProductActivity.this, "Product added", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddProductActivity.this, "Product added!", Toast.LENGTH_SHORT).show();
+                    finish();
                 }
+
                 @Override
                 public void onFailure(String message) {
-                    //
-                    Toast.makeText(AddProductActivity.this, "Product added faileds ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddProductActivity.this, "Error: " + message, Toast.LENGTH_SHORT).show();
                 }
             });
         });

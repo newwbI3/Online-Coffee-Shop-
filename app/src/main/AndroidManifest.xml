@@ -43,6 +43,12 @@
             android:name=".view.product.UpdateProductActivity"
             android:exported="false" />
         <activity
+            android:name=".view.product.ProductDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.product.ProductListActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.product.AddProductActivity"
             android:exported="false" />
 
