@@ -10,11 +10,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.onlinecoffeeshop.view.marketing.MarketingDashboardActivity;
 import com.example.onlinecoffeeshop.view.product.AddProductActivity;
 import com.example.onlinecoffeeshop.view.product.ProductListActivity;
 
 public class MainActivity extends AppCompatActivity {
-    private Button btnAdd, btnList;
+    private Button btnAdd, btnList, btnDashboard;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +29,12 @@ public class MainActivity extends AppCompatActivity {
         btnList = findViewById(R.id.listProduct_btn);
         btnList.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, ProductListActivity.class);
+            startActivity(intent);
+        });
+
+        btnDashboard = findViewById(R.id.dashboard_btn);
+        btnDashboard.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, MarketingDashboardActivity.class);
             startActivity(intent);
         });
 
