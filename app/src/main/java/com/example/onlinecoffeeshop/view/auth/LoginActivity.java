@@ -17,6 +17,7 @@ import com.example.onlinecoffeeshop.MainActivity;
 import com.example.onlinecoffeeshop.R;
 import com.example.onlinecoffeeshop.controller.AuthController;
 import com.example.onlinecoffeeshop.model.User;
+import com.example.onlinecoffeeshop.view.home.HomeActivity;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
@@ -39,7 +40,10 @@ public class LoginActivity extends AppCompatActivity {
 
         // Check if user is already logged in
         if (authController.isUserLoggedIn()) {
-            navigateToMain();
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
         }
     }
 
@@ -53,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initController() {
-        authController = new AuthController(this);
+        authController = new AuthController();
     }
 
     private void setupClickListeners() {
@@ -62,6 +66,7 @@ public class LoginActivity extends AppCompatActivity {
         tvRegister.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);
+            finish();
         });
 
         tvForgotPassword.setOnClickListener(v -> showForgotPasswordDialog());
@@ -75,23 +80,7 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        showLoading(true);
-
-        authController.loginUser(email, password)
-                .addOnCompleteListener(task -> {
-                    showLoading(false);
-
-                    if (task.isSuccessful()) {
-                        User user = task.getResult();
-                        Log.d(TAG, "Login successful: " + user.getFullname());
-                        Toast.makeText(this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-                        navigateToMain();
-                    } else {
-                        String errorMessage = getErrorMessage(task.getException());
-                        Log.e(TAG, "Login failed", task.getException());
-                        Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
-                    }
-                });
+        authController.signIn(this, email, password);
     }
 
     private boolean validateInput(String email, String password) {
@@ -109,12 +98,6 @@ public class LoginActivity extends AppCompatActivity {
 
         if (TextUtils.isEmpty(password)) {
             etPassword.setError("Mật khẩu không được để trống");
-            etPassword.requestFocus();
-            return false;
-        }
-
-        if (password.length() < 6) {
-            etPassword.setError("Mật khẩu phải có ít nhất 6 ký tự");
             etPassword.requestFocus();
             return false;
         }
@@ -144,57 +127,12 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
-            showLoading(true);
-            authController.resetPassword(email)
-                    .addOnCompleteListener(task -> {
-                        showLoading(false);
-                        if (task.isSuccessful()) {
-                            Toast.makeText(this, "Link đặt lại mật khẩu đã được gửi đến email của bạn",
-                                         Toast.LENGTH_LONG).show();
-                        } else {
-                            Toast.makeText(this, "Có lỗi xảy ra. Vui lòng thử lại",
-                                         Toast.LENGTH_SHORT).show();
-                        }
-                    });
+            authController.resetPassword(this, email);
         });
 
         builder.setNegativeButton("Hủy", (dialog, which) -> dialog.cancel());
         builder.show();
     }
 
-    private void showLoading(boolean show) {
-        if (show) {
-            progressBar.setVisibility(View.VISIBLE);
-            btnLogin.setEnabled(false);
-        } else {
-            progressBar.setVisibility(View.GONE);
-            btnLogin.setEnabled(true);
-        }
-    }
 
-    private void navigateToMain() {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
-    }
-
-    private String getErrorMessage(Exception exception) {
-        if (exception == null) {
-            return "Có lỗi xảy ra";
-        }
-
-        String message = exception.getMessage();
-        if (message != null) {
-            if (message.contains("password is invalid")) {
-                return "Mật khẩu không đúng";
-            } else if (message.contains("no user record")) {
-                return "Email không tồn tại";
-            } else if (message.contains("network error")) {
-                return "Lỗi kết nối mạng";
-            }
-        }
-
-        return "Đăng nhập thất bại. Vui lòng thử lại";
-    }
 }

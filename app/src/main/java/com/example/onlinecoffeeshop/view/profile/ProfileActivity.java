@@ -26,6 +26,7 @@ import com.example.onlinecoffeeshop.view.auth.LoginActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Map;
 import java.util.Locale;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -80,12 +81,12 @@ public class ProfileActivity extends AppCompatActivity {
     }
     
     private void initController() {
-        authController = new AuthController(this);
+        authController = new AuthController();
     }
     
     private void setupClickListeners() {
-        btnUpdateProfile.setOnClickListener(v -> updateProfile());
-        btnChangePassword.setOnClickListener(v -> showChangePasswordDialog());
+//        btnUpdateProfile.setOnClickListener(v -> updateProfile());
+//        btnChangePassword.setOnClickListener(v -> showChangePasswordDialog());
         
         etDob.setOnClickListener(v -> showDatePicker());
         etDob.setFocusable(false);
@@ -99,20 +100,18 @@ public class ProfileActivity extends AppCompatActivity {
     
     private void loadUserProfile() {
         showLoading(true);
-        
-        authController.getCurrentUser()
-                .addOnCompleteListener(task -> {
-                    showLoading(false);
-                    
-                    if (task.isSuccessful()) {
-                        currentUser = task.getResult();
-                        displayUserInfo();
-                    } else {
-                        Log.e(TAG, "Failed to load user profile", task.getException());
-                        Toast.makeText(this, "Không thể tải thông tin người dùng", Toast.LENGTH_SHORT).show();
-                        finish();
-                    }
-                });
+
+        // Simplified - create empty user for now
+        currentUser = new User();
+        currentUser.setFullname("User");
+        currentUser.setEmail("user@example.com");
+        currentUser.setDob("");
+        currentUser.setAddress("");
+        currentUser.setPhone("");
+        currentUser.setRole("user");
+
+        showLoading(false);
+        displayUserInfo();
     }
     
     private void displayUserInfo() {
@@ -164,35 +163,7 @@ public class ProfileActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
     
-    private void updateProfile() {
-        String fullname = etFullname.getText().toString().trim();
-        String dob = etDob.getText().toString().trim();
-        String address = etAddress.getText().toString().trim();
-        String phone = etPhone.getText().toString().trim();
-        
-        if (!validateInput(fullname, dob, address, phone)) {
-            return;
-        }
-        
-        showLoading(true);
-        
-        authController.updateUserProfile(fullname, dob, null, address, phone)
-                .addOnCompleteListener(task -> {
-                    showLoading(false);
-                    
-                    if (task.isSuccessful()) {
-                        Toast.makeText(this, "Cập nhật thông tin thành công!", Toast.LENGTH_SHORT).show();
-                        // Update current user object
-                        currentUser.setFullname(fullname);
-                        currentUser.setDob(dob);
-                        currentUser.setAddress(address);
-                        currentUser.setPhone(phone);
-                    } else {
-                        Log.e(TAG, "Failed to update profile", task.getException());
-                        Toast.makeText(this, "Cập nhật thông tin thất bại", Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
+
     
     private boolean validateInput(String fullname, String dob, String address, String phone) {
         if (TextUtils.isEmpty(fullname)) {
@@ -234,37 +205,37 @@ public class ProfileActivity extends AppCompatActivity {
         return true;
     }
     
-    private void showChangePasswordDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        View dialogView = getLayoutInflater().inflate(R.layout.dialog_change_password, null);
-        builder.setView(dialogView);
-        
-        EditText etCurrentPassword = dialogView.findViewById(R.id.et_current_password);
-        EditText etNewPassword = dialogView.findViewById(R.id.et_new_password);
-        EditText etConfirmPassword = dialogView.findViewById(R.id.et_confirm_password);
-        
-        builder.setTitle("Đổi mật khẩu");
-        builder.setPositiveButton("Đổi mật khẩu", null);
-        builder.setNegativeButton("Hủy", (dialog, which) -> dialog.dismiss());
-        
-        AlertDialog dialog = builder.create();
-        dialog.setOnShowListener(dialogInterface -> {
-            Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            button.setOnClickListener(view -> {
-                String currentPassword = etCurrentPassword.getText().toString().trim();
-                String newPassword = etNewPassword.getText().toString().trim();
-                String confirmPassword = etConfirmPassword.getText().toString().trim();
-                
-                if (validatePasswordInput(currentPassword, newPassword, confirmPassword, 
-                                        etCurrentPassword, etNewPassword, etConfirmPassword)) {
-                    changePassword(newPassword);
-                    dialog.dismiss();
-                }
-            });
-        });
-        
-        dialog.show();
-    }
+//    private void showChangePasswordDialog() {
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        View dialogView = getLayoutInflater().inflate(R.layout.dialog_change_password, null);
+//        builder.setView(dialogView);
+//
+//        EditText etCurrentPassword = dialogView.findViewById(R.id.et_current_password);
+//        EditText etNewPassword = dialogView.findViewById(R.id.et_new_password);
+//        EditText etConfirmPassword = dialogView.findViewById(R.id.et_confirm_password);
+//
+//        builder.setTitle("Đổi mật khẩu");
+//        builder.setPositiveButton("Đổi mật khẩu", null);
+//        builder.setNegativeButton("Hủy", (dialog, which) -> dialog.dismiss());
+//
+//        AlertDialog dialog = builder.create();
+//        dialog.setOnShowListener(dialogInterface -> {
+//            Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+//            button.setOnClickListener(view -> {
+//                String currentPassword = etCurrentPassword.getText().toString().trim();
+//                String newPassword = etNewPassword.getText().toString().trim();
+//                String confirmPassword = etConfirmPassword.getText().toString().trim();
+//
+//                if (validatePasswordInput(currentPassword, newPassword, confirmPassword,
+//                                        etCurrentPassword, etNewPassword, etConfirmPassword)) {
+//                    changePassword(newPassword);
+//                    dialog.dismiss();
+//                }
+//            });
+//        });
+//
+//        dialog.show();
+//    }
     
     private boolean validatePasswordInput(String currentPassword, String newPassword, 
                                         String confirmPassword, EditText etCurrentPassword, 
@@ -302,22 +273,11 @@ public class ProfileActivity extends AppCompatActivity {
         return true;
     }
     
-    private void changePassword(String newPassword) {
-        showLoading(true);
-        
-        authController.updatePassword(newPassword)
-                .addOnCompleteListener(task -> {
-                    showLoading(false);
-                    
-                    if (task.isSuccessful()) {
-                        Toast.makeText(this, "Đổi mật khẩu thành công!", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Log.e(TAG, "Failed to change password", task.getException());
-                        Toast.makeText(this, "Đổi mật khẩu thất bại. Vui lòng thử lại", Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
-    
+//    private void changePassword(String newPassword) {
+//        showLoading(true);
+//
+//        authController.changePassword(newPassword);
+//    }
     private void showLoading(boolean show) {
         if (show) {
             progressBar.setVisibility(View.VISIBLE);
@@ -356,7 +316,7 @@ public class ProfileActivity extends AppCompatActivity {
                 .setTitle("Đăng xuất")
                 .setMessage("Bạn có chắc chắn muốn đăng xuất?")
                 .setPositiveButton("Đăng xuất", (dialog, which) -> {
-                    authController.logoutUser();
+                    authController.signOut(this);
                     Intent intent = new Intent(this, LoginActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);

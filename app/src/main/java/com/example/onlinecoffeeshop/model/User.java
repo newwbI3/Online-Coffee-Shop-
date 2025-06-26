@@ -7,7 +7,7 @@ import java.util.List;
 
 public class User {
     public static final List<String> VALID_ROLES = Arrays.asList("marketer", "admin", "inventory", "user");
-    @DocumentId
+    @PropertyName("uid")
     private String uid;
 
     @PropertyName("fullname")

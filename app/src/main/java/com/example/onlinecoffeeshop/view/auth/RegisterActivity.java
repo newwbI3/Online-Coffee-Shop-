@@ -1,5 +1,6 @@
 package com.example.onlinecoffeeshop.view.auth;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import com.example.onlinecoffeeshop.MainActivity;
 import com.example.onlinecoffeeshop.R;
 import com.example.onlinecoffeeshop.controller.AuthController;
 import com.example.onlinecoffeeshop.model.User;
+import com.example.onlinecoffeeshop.view.home.HomeActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -63,7 +65,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void initController() {
-        authController = new AuthController(this);
+        authController = new AuthController();
     }
 
     private void setupClickListeners() {
@@ -108,27 +110,20 @@ public class RegisterActivity extends AppCompatActivity {
         String address = etAddress.getText().toString().trim();
         String phone = etPhone.getText().toString().trim();
 
+        User user = new User(
+                fullname,
+                dob,
+                "", // Avatar can be set later
+                address,
+                phone,
+                "user", // Default role
+                email
+        );
         if (!validateInput(fullname, email, password, confirmPassword, dob, address, phone)) {
             return;
         }
 
-        showLoading(true);
-
-        authController.registerUser(email, password, fullname, dob, address, phone)
-                .addOnCompleteListener(task -> {
-                    showLoading(false);
-
-                    if (task.isSuccessful()) {
-                        User user = task.getResult();
-                        Log.d(TAG, "Registration successful: " + user.getFullname());
-                        Toast.makeText(this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
-                        navigateToMain();
-                    } else {
-                        String errorMessage = getErrorMessage(task.getException());
-                        Log.e(TAG, "Registration failed", task.getException());
-                        Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
-                    }
-                });
+        authController.signUp(this, email, password, user);
     }
 
     private boolean validateInput(String fullname, String email, String password,
@@ -208,39 +203,5 @@ public class RegisterActivity extends AppCompatActivity {
         return true;
     }
 
-    private void showLoading(boolean show) {
-        if (show) {
-            progressBar.setVisibility(View.VISIBLE);
-            btnRegister.setEnabled(false);
-        } else {
-            progressBar.setVisibility(View.GONE);
-            btnRegister.setEnabled(true);
-        }
-    }
 
-    private void navigateToMain() {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
-    }
-
-    private String getErrorMessage(Exception exception) {
-        if (exception == null) {
-            return "Có lỗi xảy ra";
-        }
-
-        String message = exception.getMessage();
-        if (message != null) {
-            if (message.contains("email address is already in use")) {
-                return "Email đã được sử dụng";
-            } else if (message.contains("weak password")) {
-                return "Mật khẩu quá yếu";
-            } else if (message.contains("network error")) {
-                return "Lỗi kết nối mạng";
-            }
-        }
-
-        return "Đăng ký thất bại. Vui lòng thử lại";
-    }
 }
