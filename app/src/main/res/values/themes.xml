@@ -6,4 +6,10 @@
     </style>
 
     <style name="Theme.OnlineCoffeeShop" parent="Base.Theme.OnlineCoffeeShop" />
+
+    <!-- Theme without action bar for authentication activities -->
+    <style name="Theme.OnlineCoffeeShop.NoActionBar" parent="Theme.OnlineCoffeeShop">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 </resources>
