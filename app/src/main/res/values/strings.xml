@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Online Coffee Shop</string>
+    <string name="choose_your_types_of_coffee">Choose Your Types of Coffee</string>
+    <string name="search">Search</string>
+    <string name="category">Category</string>
+    <string name="popular">Popular</string>
+    <string name="textpopular">Popular</string>
 </resources>
