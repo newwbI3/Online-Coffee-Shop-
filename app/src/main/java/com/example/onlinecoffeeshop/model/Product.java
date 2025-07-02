@@ -3,6 +3,7 @@ package com.example.onlinecoffeeshop.model;
 import java.util.List;
 
 public class Product {
+    private String productId;
     private String title;
     private String description;
     private String extra;
@@ -22,6 +23,14 @@ public class Product {
     }
 
     public Product() {
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 
     public String getTitle() {

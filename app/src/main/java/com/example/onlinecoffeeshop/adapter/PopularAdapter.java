@@ -1,6 +1,7 @@
 package com.example.onlinecoffeeshop.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.onlinecoffeeshop.R;
 import com.example.onlinecoffeeshop.model.Product;
+import com.example.onlinecoffeeshop.view.product.DetailProduct;
 
 import java.util.List;
 
@@ -48,6 +50,16 @@ public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.PopularV
         } else {
             holder.imgProduct.setImageResource(R.drawable.coffee_svgrepo_com);
         }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Xử lý khi item được nhấn
+                Intent intent = new Intent(context, DetailProduct.class);
+                intent.putExtra("productId", product.getProductId());
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
