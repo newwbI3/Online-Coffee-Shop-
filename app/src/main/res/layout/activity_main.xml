@@ -140,6 +140,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/listProductView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"

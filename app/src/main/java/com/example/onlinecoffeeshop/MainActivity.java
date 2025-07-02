@@ -1,9 +1,11 @@
 package com.example.onlinecoffeeshop;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -19,6 +21,7 @@ import com.example.onlinecoffeeshop.controller.CategoryController;
 import com.example.onlinecoffeeshop.controller.HomeController;
 import com.example.onlinecoffeeshop.model.Category;
 import com.example.onlinecoffeeshop.model.Product;
+import com.example.onlinecoffeeshop.view.product.ListProductActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -31,7 +34,10 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar progressBarBanner, progressBarCat, progressBarDrink;
     private RecyclerView recyclerViewCat, recyclerViewDrinks;
 
+    private TextView listProductView;
+
     private HomeController controller;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,12 +50,22 @@ public class MainActivity extends AppCompatActivity {
         progressBarDrink = findViewById(R.id.progressBarDrink);
         recyclerViewCat = findViewById(R.id.recyclerViewCat);
         recyclerViewDrinks = findViewById(R.id.recyclerViewDrinks);
+        listProductView = findViewById(R.id.listProductView);
+
+        listProductView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ListProductActivity.class);
+                startActivity(intent);
+            }
+        });
 
         controller = new HomeController();
 
         loadBanner();
         loadCategories();
         loadPopularDrinks();
+
     }
 
     private void loadBanner() {
@@ -64,9 +80,11 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
         });
     }
+
     private void loadCategories() {
         controller.loadCategories(new ValueEventListener() {
             @Override
@@ -82,7 +100,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
         });
     }
 
@@ -101,8 +120,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
         });
     }
-
 }
