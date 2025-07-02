@@ -59,7 +59,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+        imgBanner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ListProductActivity.class);
+                startActivity(intent);
+            }
+        });
         controller = new HomeController();
 
         loadBanner();

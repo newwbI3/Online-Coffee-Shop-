@@ -2,22 +2,21 @@ package com.example.onlinecoffeeshop.model;
 
 public class CartItem {
     private String productId;
-    private String name;
+    private String title;
+    private String imageUrl;
     private double price;
     private int quantity;
-    private String imageUrl;
 
-    public CartItem() {}
-
-    public CartItem(String productId, String name, double price, int quantity, String imageUrl) {
+    public CartItem(String productId, String title, String imageUrl, double price, int quantity) {
         this.productId = productId;
-        this.name = name;
+        this.title = title;
+        this.imageUrl = imageUrl;
         this.price = price;
         this.quantity = quantity;
-        this.imageUrl = imageUrl;
     }
 
-    // Getter & Setter
+    public CartItem() {
+    }
 
     public String getProductId() {
         return productId;
@@ -27,12 +26,20 @@ public class CartItem {
         this.productId = productId;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public double getPrice() {
@@ -49,14 +56,6 @@ public class CartItem {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
 }
 
