@@ -119,7 +119,7 @@
 
         <!-- Tổng thanh toán -->
         <TextView
-            android:id="@+id/totalAmountTxt"
+            android:id="@+id/totalTxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Tổng: $0"

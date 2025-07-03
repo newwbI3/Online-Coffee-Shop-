@@ -24,7 +24,6 @@ public class OrderController {
             listener.onFailure("Order hoặc orderId không hợp lệ");
             return;
         }
-
         orderRef.child(order.getOrderId()).setValue(order)
                 .addOnSuccessListener(unused -> listener.onSuccess())
                 .addOnFailureListener(e -> listener.onFailure(e.getMessage()));

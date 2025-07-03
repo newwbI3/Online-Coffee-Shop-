@@ -2,11 +2,13 @@ package com.example.onlinecoffeeshop;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -132,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                     categories.add(cat);
                 }
                 recyclerViewCat.setLayoutManager(new LinearLayoutManager(MainActivity.this, RecyclerView.HORIZONTAL, false));
-                recyclerViewCat.setAdapter(new CategoryAdapter(categories));
+                recyclerViewCat.setAdapter(new CategoryAdapter(MainActivity.this, categories));
             }
 
             @Override
@@ -140,6 +142,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
+
 
     private void loadPopularDrinks() {
         controller.loadPopularItems(new ValueEventListener() {

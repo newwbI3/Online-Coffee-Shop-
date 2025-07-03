@@ -18,6 +18,7 @@ import com.example.onlinecoffeeshop.controller.PopularController;
 import com.example.onlinecoffeeshop.controller.ProductController;
 import com.example.onlinecoffeeshop.model.CartItem;
 import com.example.onlinecoffeeshop.model.Product;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -27,7 +28,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class DetailProductActivity extends AppCompatActivity {
-    private final String userId = "guest";
+    private String userId;
     private ImageView picMain;
     private TextView titleTxt, descriptionTxt, ratingTxt, priceTxt, quantityTxt, plusBtn, minusBtn;
     private TextView backBtn, smallTxt, mediumTxt, largeTxt;
@@ -50,6 +51,10 @@ public class DetailProductActivity extends AppCompatActivity {
 
         popularController = new PopularController();
         productController = new ProductController();
+
+        userId = (FirebaseAuth.getInstance().getCurrentUser() != null)
+                ? FirebaseAuth.getInstance().getCurrentUser().getUid()
+                : "guest";
 
 
         String productId = getIntent().getStringExtra("productId");
@@ -112,7 +117,7 @@ public class DetailProductActivity extends AppCompatActivity {
 
                 String cartId = UUID.randomUUID().toString();
                 FirebaseDatabase.getInstance().getReference("Cart")
-                        .child("guest")
+                        .child(userId)  // ✅ đúng theo người dùng đã login
                         .child(cartId)
                         .setValue(item)
                         .addOnSuccessListener(unused -> {

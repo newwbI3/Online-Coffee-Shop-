@@ -3,6 +3,7 @@ package com.example.onlinecoffeeshop.view.order;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -14,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+import com.example.onlinecoffeeshop.MainActivity;
 import com.example.onlinecoffeeshop.R;
 import com.example.onlinecoffeeshop.controller.OrderController;
 import com.example.onlinecoffeeshop.model.CartItem;
@@ -35,7 +37,7 @@ import java.util.UUID;
 public class CheckoutActivity extends AppCompatActivity {
     private EditText fullNameEdt, phoneEdt, emailEdt, addressEdt, noteEdt;
     private RadioGroup deliveryMethodGroup, paymentMethodGroup;
-    private TextView totalAmountTxt;
+    private TextView totalTxt;
     private Button btnPlaceOrder;
 
     private List<CartItem> cartItems;
@@ -63,7 +65,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
         initViews();
         loadCartItems();
-
+        Log.d("CHECKOUT_LOG", "Cart: " + cartRef);
         btnPlaceOrder.setOnClickListener(v -> {
             if (validateInputs()) {
                 placeOrder();
@@ -78,23 +80,27 @@ public class CheckoutActivity extends AppCompatActivity {
         noteEdt = findViewById(R.id.note);
         deliveryMethodGroup = findViewById(R.id.deliveryMethod);
         paymentMethodGroup = findViewById(R.id.paymentMethod);
-        totalAmountTxt = findViewById(R.id.totalAmountTxt);
+        totalTxt = findViewById(R.id.totalTxt);
         btnPlaceOrder = findViewById(R.id.btnPlaceOrder);
     }
     private void loadCartItems() {
-        cartItems = (List<CartItem>) getIntent().getSerializableExtra("cartItems");
+        cartItems = new ArrayList<>();
         cartRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                totalAmount = 0;
                 for (DataSnapshot itemSnap : snapshot.getChildren()) {
                     CartItem item = itemSnap.getValue(CartItem.class);
                     if (item != null) {
                         cartItems.add(item);
-                        totalAmount += item.getPrice() * item.getQuantity();
                     }
                 }
-                totalAmountTxt.setText("Tổng: $" + String.format("%.2f", totalAmount));
+
+                // ✅ Gán lại totalAmount từ Intent (KHÔNG tính lại)
+                totalAmount = getIntent().getDoubleExtra("totalAmount", 0.0);
+                totalTxt.setText(String.format("Tổng: %.2f$", totalAmount));
+                Log.d("CHECKOUT_LOG", "Cart: " + cartItems);
+                // ✅ Enable nút đặt hàng khi đã có dữ liệu
+                btnPlaceOrder.setEnabled(true);
             }
 
             @Override
@@ -103,6 +109,8 @@ public class CheckoutActivity extends AppCompatActivity {
             }
         });
     }
+
+
     private boolean validateInputs() {
         if (TextUtils.isEmpty(fullNameEdt.getText()) ||
                 TextUtils.isEmpty(phoneEdt.getText()) ||
@@ -132,6 +140,18 @@ public class CheckoutActivity extends AppCompatActivity {
         String orderId = UUID.randomUUID().toString();
         long timestamp = System.currentTimeMillis();
 
+        // ✅ LOG: kiểm tra các thông tin đơn hàng
+        Log.d("CHECKOUT_LOG", "FullName: " + fullName);
+        Log.d("CHECKOUT_LOG", "Phone: " + phone);
+        Log.d("CHECKOUT_LOG", "Email: " + email);
+        Log.d("CHECKOUT_LOG", "Address: " + address);
+        Log.d("CHECKOUT_LOG", "DeliveryMethod: " + deliveryMethod);
+        Log.d("CHECKOUT_LOG", "PaymentMethod: " + paymentMethod);
+        Log.d("CHECKOUT_LOG", "Note: " + note);
+        Log.d("CHECKOUT_LOG", "TotalAmount: " + totalAmount);
+        Log.d("CHECKOUT_LOG", "Timestamp: " + timestamp);
+        Log.d("CHECKOUT_LOG", "Cart Size: " + (cartItems != null ? cartItems.size() : 0));
+
         User user = new User(userId, fullName, phone, email, address);
         Order order = new Order(orderId, user, note, deliveryMethod, paymentMethod, cartItems, totalAmount, timestamp);
 
@@ -150,4 +170,5 @@ public class CheckoutActivity extends AppCompatActivity {
             }
         });
     }
+
 }

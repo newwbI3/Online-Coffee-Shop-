@@ -1,6 +1,7 @@
 package com.example.onlinecoffeeshop.view.product;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -29,35 +30,53 @@ public class ListProductActivity extends AppCompatActivity {
     private ProductController productController;
     private LinearLayout backBtn;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_list_product);
+
         recyclerView = findViewById(R.id.cartView);
         progressBar = findViewById(R.id.progressBar3);
         backBtn = findViewById(R.id.back_btn);
         backBtn.setOnClickListener(v -> finish());
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this)); // 2 columns
-
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         productController = new ProductController();
+
         loadProducts();
     }
+
     private void loadProducts() {
+        String categoryId = getIntent().getStringExtra("categoryId");
         progressBar.setVisibility(View.VISIBLE);
+
         productController.getAllProducts(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 progressBar.setVisibility(View.GONE);
                 List<Product> productList = new ArrayList<>();
+
                 for (DataSnapshot item : snapshot.getChildren()) {
                     Product product = item.getValue(Product.class);
                     if (product != null) {
-                        productList.add(product);
+                        // Nếu categoryId không null, lọc theo danh mục
+                        if (categoryId != null) {
+                            if (categoryId.equals(product.getCategoryId())) {
+                                productList.add(product);
+                            }
+                        } else {
+                            productList.add(product); // nếu không có categoryId, hiển thị tất cả
+                        }
+                        Log.d("CATEGORY_FILTER", "categoryId: " + categoryId + ", productId: " + product.getProductId() + ", product.categoryId: " + product.getCategoryId());
+
                     }
                 }
+
+                if (productList.isEmpty()) {
+                    Toast.makeText(ListProductActivity.this, "Không có sản phẩm nào trong danh mục này", Toast.LENGTH_SHORT).show();
+                }
+
                 recyclerView.setAdapter(new ProductAdapter(ListProductActivity.this, productList));
             }
 
@@ -68,4 +87,5 @@ public class ListProductActivity extends AppCompatActivity {
             }
         });
     }
+
 }

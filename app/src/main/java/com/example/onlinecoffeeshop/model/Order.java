@@ -3,26 +3,27 @@ package com.example.onlinecoffeeshop.model;
 import java.util.List;
 
 public class Order {
+
     private String orderId;
     private String userId;
     private String fullName;
     private String phone;
     private String email;
     private String address;
-
     private String note;
     private String deliveryMethod;
     private String paymentMethod;
-
     private List<CartItem> items;
     private double total;
     private long timestamp;
 
-    public Order() {
-    }
+    // Bắt buộc cho Firebase
+    public Order() {}
 
-    public Order(String orderId, String userId, String fullName, String phone, String email, String address,
-                 String note, String deliveryMethod, String paymentMethod, List<CartItem> items, double total, long timestamp) {
+    // Full constructor dùng trong Firebase write
+    public Order(String orderId, String userId, String fullName, String phone, String email,
+                 String address, String note, String deliveryMethod, String paymentMethod,
+                 List<CartItem> items, double total, long timestamp) {
         this.orderId = orderId;
         this.userId = userId;
         this.fullName = fullName;
@@ -37,13 +38,24 @@ public class Order {
         this.timestamp = timestamp;
     }
 
-    public Order(String orderId, User user, String note, String deliveryMethod, String paymentMethod, List<CartItem> cartItems, double totalAmount, long timestamp) {
+    // Constructor tiện dụng khi đã có đối tượng User
+    public Order(String orderId, User user, String note, String deliveryMethod,
+                 String paymentMethod, List<CartItem> items, double total, long timestamp) {
         this.orderId = orderId;
         this.userId = user.getUid();
         this.fullName = user.getFullname();
         this.phone = user.getPhone();
         this.email = user.getEmail();
+        this.address = user.getAddress();
+        this.note = note;
+        this.deliveryMethod = deliveryMethod;
+        this.paymentMethod = paymentMethod;
+        this.items = items;
+        this.total = total;
+        this.timestamp = timestamp;
     }
+
+    // Getters & Setters
 
     public String getOrderId() {
         return orderId;

@@ -1,5 +1,7 @@
 package com.example.onlinecoffeeshop.adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,13 +12,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.onlinecoffeeshop.R;
 import com.example.onlinecoffeeshop.model.Category;
+import com.example.onlinecoffeeshop.view.product.ListProductActivity;
 
 import java.util.List;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
-    private List<Category> list;
+    private final List<Category> list;
+    private final Context context;
 
-    public CategoryAdapter(List<Category> list) { this.list = list; }
+    public CategoryAdapter(Context context, List<Category> list) {
+        this.context = context;
+        this.list = list;
+    }
+
     @NonNull
     @Override
     public CategoryAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -28,6 +36,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     public void onBindViewHolder(@NonNull CategoryAdapter.ViewHolder holder, int position) {
         Category cat = list.get(position);
         holder.txtTitle.setText(cat.getTitle());
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, ListProductActivity.class);
+            intent.putExtra("categoryId", String.valueOf(cat.getId()));  // Đảm bảo là String
+            context.startActivity(intent);
+        });
     }
 
     @Override
@@ -35,8 +49,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         return list.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView txtTitle;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             txtTitle = itemView.findViewById(R.id.txtTitle);
