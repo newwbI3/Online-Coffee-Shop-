@@ -26,7 +26,7 @@
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/editTextText"
+                    android:id="@+id/searchTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     android:layout_weight="1"
@@ -41,13 +41,13 @@
                     android:textColorHint="@color/darkBrown" />
 
                 <ImageView
-                    android:id="@+id/imageView"
+                    android:id="@+id/searchView"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_marginStart="16dp"
                     android:background="@drawable/dark_brow_bg"
                     android:padding="12dp"
-                    app:srcCompat="@drawable/settings" />
+                    app:srcCompat="@drawable/ic_coffee_logo" />
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout

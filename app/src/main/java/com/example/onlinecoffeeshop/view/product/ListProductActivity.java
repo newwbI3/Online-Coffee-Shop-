@@ -49,6 +49,8 @@ public class ListProductActivity extends AppCompatActivity {
 
     private void loadProducts() {
         String categoryId = getIntent().getStringExtra("categoryId");
+        String searchQuery = getIntent().getStringExtra("searchQuery");
+
         progressBar.setVisibility(View.VISIBLE);
 
         productController.getAllProducts(new ValueEventListener() {
@@ -59,22 +61,14 @@ public class ListProductActivity extends AppCompatActivity {
 
                 for (DataSnapshot item : snapshot.getChildren()) {
                     Product product = item.getValue(Product.class);
-                    if (product != null) {
-                        // Nếu categoryId không null, lọc theo danh mục
-                        if (categoryId != null) {
-                            if (categoryId.equals(product.getCategoryId())) {
-                                productList.add(product);
-                            }
-                        } else {
-                            productList.add(product); // nếu không có categoryId, hiển thị tất cả
-                        }
-                        Log.d("CATEGORY_FILTER", "categoryId: " + categoryId + ", productId: " + product.getProductId() + ", product.categoryId: " + product.getCategoryId());
+                    if (product == null) continue;
 
+                    boolean matchCategory = categoryId == null || categoryId.equals(product.getCategoryId());
+                    boolean matchSearch = searchQuery == null || product.getTitle().toLowerCase().contains(searchQuery.toLowerCase());
+
+                    if (matchCategory && matchSearch) {
+                        productList.add(product);
                     }
-                }
-
-                if (productList.isEmpty()) {
-                    Toast.makeText(ListProductActivity.this, "Không có sản phẩm nào trong danh mục này", Toast.LENGTH_SHORT).show();
                 }
 
                 recyclerView.setAdapter(new ProductAdapter(ListProductActivity.this, productList));
@@ -83,9 +77,11 @@ public class ListProductActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 progressBar.setVisibility(View.GONE);
-                Toast.makeText(ListProductActivity.this, "Lỗi tải danh sách sản phẩm", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ListProductActivity.this, "Lỗi tải sản phẩm", Toast.LENGTH_SHORT).show();
             }
         });
     }
+
+
 
 }

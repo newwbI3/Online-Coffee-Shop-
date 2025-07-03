@@ -2,8 +2,10 @@ package com.example.onlinecoffeeshop;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -20,7 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.onlinecoffeeshop.adapter.CategoryAdapter;
 import com.example.onlinecoffeeshop.adapter.PopularAdapter;
-import com.example.onlinecoffeeshop.controller.CategoryController;
 import com.example.onlinecoffeeshop.controller.HomeController;
 import com.example.onlinecoffeeshop.model.Category;
 import com.example.onlinecoffeeshop.model.Product;
@@ -37,12 +38,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private ImageView imgBanner;
+    private ImageView imgBanner, searchView;
     private ProgressBar progressBarBanner, progressBarCat, progressBarDrink;
     private RecyclerView recyclerViewCat, recyclerViewDrinks;
     private FirebaseAuth mAuth;
     private TextView listProductView;
-
+    private EditText searchEditText;
     private HomeController controller;
     private LinearLayout cartLayout, profileLayout;
 
@@ -52,17 +53,51 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        imgBanner = findViewById(R.id.imgBanner);
-        progressBarBanner = findViewById(R.id.progressBarBanner);
-        progressBarCat = findViewById(R.id.progressBarCat);
-        progressBarDrink = findViewById(R.id.progressBarDrink);
-        recyclerViewCat = findViewById(R.id.recyclerViewCat);
-        recyclerViewDrinks = findViewById(R.id.recyclerViewDrinks);
-        listProductView = findViewById(R.id.listProductView);
-        cartLayout = findViewById(R.id.layoutCart);
-        profileLayout = findViewById(R.id.layoutProfile);
-        mAuth = FirebaseAuth.getInstance();
+        controller = new HomeController();
 
+        initView();
+
+        searchProduct();
+        loadBanner();
+        loadCategories();
+        loadPopularDrinks();
+        ViewListProduct();
+        OrderProduct();
+        getLayoutProfile();
+        getLayoutCart();
+    }
+
+    private void OrderProduct() {
+        imgBanner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ListProductActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void ViewListProduct() {
+        listProductView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ListProductActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void getLayoutCart() {
+        cartLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, CartActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void getLayoutProfile() {
         profileLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,35 +110,34 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
 
-        cartLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, CartActivity.class);
-                startActivity(intent);
-            }
-        });
+    private void initView() {
+        imgBanner = findViewById(R.id.imgBanner);
+        progressBarBanner = findViewById(R.id.progressBarBanner);
+        progressBarCat = findViewById(R.id.progressBarCat);
+        progressBarDrink = findViewById(R.id.progressBarDrink);
+        recyclerViewCat = findViewById(R.id.recyclerViewCat);
+        recyclerViewDrinks = findViewById(R.id.recyclerViewDrinks);
+        listProductView = findViewById(R.id.listProductView);
+        cartLayout = findViewById(R.id.layoutCart);
+        profileLayout = findViewById(R.id.layoutProfile);
+        mAuth = FirebaseAuth.getInstance();
+        searchEditText = findViewById(R.id.searchTxt);
+        searchView = findViewById(R.id.searchView);
+    }
 
-        listProductView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    private void searchProduct() {
+        searchView.setOnClickListener(v -> {
+            String query = searchEditText.getText().toString().trim();
+            if (!query.isEmpty()) {
                 Intent intent = new Intent(MainActivity.this, ListProductActivity.class);
+                intent.putExtra("searchQuery", query);
                 startActivity(intent);
+            } else {
+                Toast.makeText(MainActivity.this, "Vui lòng nhập từ khóa tìm kiếm", Toast.LENGTH_SHORT).show();
             }
         });
-        imgBanner.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ListProductActivity.class);
-                startActivity(intent);
-            }
-        });
-        controller = new HomeController();
-
-        loadBanner();
-        loadCategories();
-        loadPopularDrinks();
-
     }
 
     private void loadBanner() {
