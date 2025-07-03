@@ -9,9 +9,6 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,7 +35,7 @@ public class ListProductActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_list_product);
-        recyclerView = findViewById(R.id.recyclerViewListProduct);
+        recyclerView = findViewById(R.id.cartView);
         progressBar = findViewById(R.id.progressBar3);
         backBtn = findViewById(R.id.back_btn);
         backBtn.setOnClickListener(v -> finish());

@@ -228,6 +228,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/layoutCart"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.2"
@@ -291,6 +292,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/layoutProfile"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.2"

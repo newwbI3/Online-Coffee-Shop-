@@ -1,6 +1,8 @@
 package com.example.onlinecoffeeshop.model;
 
-public class CartItem {
+import java.io.Serializable;
+
+public class CartItem implements Serializable {
     private String productId;
     private String title;
     private String imageUrl;

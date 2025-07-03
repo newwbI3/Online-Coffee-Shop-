@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -21,7 +22,11 @@ import com.example.onlinecoffeeshop.controller.CategoryController;
 import com.example.onlinecoffeeshop.controller.HomeController;
 import com.example.onlinecoffeeshop.model.Category;
 import com.example.onlinecoffeeshop.model.Product;
+import com.example.onlinecoffeeshop.view.auth.LoginActivity;
+import com.example.onlinecoffeeshop.view.cart.CartActivity;
 import com.example.onlinecoffeeshop.view.product.ListProductActivity;
+import com.example.onlinecoffeeshop.view.profile.ProfileActivity;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -33,10 +38,11 @@ public class MainActivity extends AppCompatActivity {
     private ImageView imgBanner;
     private ProgressBar progressBarBanner, progressBarCat, progressBarDrink;
     private RecyclerView recyclerViewCat, recyclerViewDrinks;
-
+    private FirebaseAuth mAuth;
     private TextView listProductView;
 
     private HomeController controller;
+    private LinearLayout cartLayout, profileLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +57,30 @@ public class MainActivity extends AppCompatActivity {
         recyclerViewCat = findViewById(R.id.recyclerViewCat);
         recyclerViewDrinks = findViewById(R.id.recyclerViewDrinks);
         listProductView = findViewById(R.id.listProductView);
+        cartLayout = findViewById(R.id.layoutCart);
+        profileLayout = findViewById(R.id.layoutProfile);
+        mAuth = FirebaseAuth.getInstance();
+
+        profileLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mAuth.getCurrentUser() == null){
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    return;
+                }
+                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        cartLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, CartActivity.class);
+                startActivity(intent);
+            }
+        });
 
         listProductView.setOnClickListener(new View.OnClickListener() {
             @Override
