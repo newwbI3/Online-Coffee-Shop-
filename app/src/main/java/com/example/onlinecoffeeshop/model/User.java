@@ -56,6 +56,15 @@ public class User {
         this.role = role != null && VALID_ROLES.contains(role.toLowerCase()) ? role.toLowerCase() : "user";
         this.email = email;
     }
+
+    public User(String userId, String fullName, String phone, String email, String address) {
+        this.uid = userId;
+        this.fullname = fullName;
+        this.phone = phone;
+        this.email = email;
+        this.address = address;
+    }
+
     public String getUid() {
         return uid;
     }

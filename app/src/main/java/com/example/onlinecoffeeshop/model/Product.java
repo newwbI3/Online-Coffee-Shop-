@@ -1,16 +1,45 @@
 package com.example.onlinecoffeeshop.model;
 
-public class Product {
-    private String product_id;
-    private String name;
-    private String category_id;
-    private double price;
-    private String description;
-    private String image_url;
-    private boolean is_active;
-    private String created_at;
+import java.util.List;
 
-    public Product() { }
+public class Product {
+    private String productId;
+    private String title;
+    private String description;
+    private String extra;
+    private List<String> picUrl;
+    private double price;
+    private double rating;
+    private String categoryId;
+
+    public Product(String title, String description, String extra, List<String> picUrl, double price, double rating, String categoryId) {
+        this.title = title;
+        this.description = description;
+        this.extra = extra;
+        this.picUrl = picUrl;
+        this.price = price;
+        this.rating = rating;
+        this.categoryId = categoryId;
+    }
+
+    public Product() {
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public String getDescription() {
         return description;
@@ -20,39 +49,20 @@ public class Product {
         this.description = description;
     }
 
-    public Product(String product_id, String name, String category_id, double price, String description, String image_url, boolean is_active, String created_at) {
-        this.product_id = product_id;
-        this.name = name;
-        this.category_id = category_id;
-        this.price = price;
-        this.description = description;
-        this.image_url = image_url;
-        this.is_active = is_active;
-        this.created_at = created_at;
+    public String getExtra() {
+        return extra;
     }
 
-    public String getProduct_id() {
-        return product_id;
+    public void setExtra(String extra) {
+        this.extra = extra;
     }
 
-    public void setProduct_id(String product_id) {
-        this.product_id = product_id;
+    public List<String> getPicUrl() {
+        return picUrl;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCategory_id() {
-        return category_id;
-    }
-
-    public void setCategory_id(String category_id) {
-        this.category_id = category_id;
+    public void setPicUrl(List<String> picUrl) {
+        this.picUrl = picUrl;
     }
 
     public double getPrice() {
@@ -63,27 +73,19 @@ public class Product {
         this.price = price;
     }
 
-    public String getImage_url() {
-        return image_url;
+    public double getRating() {
+        return rating;
     }
 
-    public void setImage_url(String image_url) {
-        this.image_url = image_url;
+    public void setRating(double rating) {
+        this.rating = rating;
     }
 
-    public boolean isIs_active() {
-        return is_active;
+    public String getCategoryId() {
+        return categoryId;
     }
 
-    public void setIs_active(boolean is_active) {
-        this.is_active = is_active;
-    }
-
-    public String getCreated_at() {
-        return created_at;
-    }
-
-    public void setCreated_at(String created_at) {
-        this.created_at = created_at;
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
     }
 }

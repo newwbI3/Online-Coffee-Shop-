@@ -2,25 +2,33 @@ package com.example.onlinecoffeeshop.controller;
 
 import com.example.onlinecoffeeshop.model.CartItem;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class CartController {
-    public void addToCart(CartItem item, OnCartAddListener listener) {
-        String uid = FirebaseAuth.getInstance().getUid();
-        if (uid == null) {
-            listener.onFailure("User not logged in");
-            return;
-        }
+    private final DatabaseReference cartRef;
 
-        FirebaseDatabase.getInstance().getReference("cart")
-                .child(uid)
-                .push()
-                .setValue(item)
-                .addOnSuccessListener(unused -> listener.onSuccess())
-                .addOnFailureListener(e -> listener.onFailure(e.getMessage()));
+    public CartController(String userId) {
+        cartRef = FirebaseDatabase.getInstance().getReference("Cart").child(userId);
     }
-    public interface OnCartAddListener {
-        void onSuccess();
-        void onFailure(String error);
+
+    public void addToCart(CartItem item) {
+        cartRef.child(item.getProductId()).setValue(item);
+    }
+    public void getCartItems(ValueEventListener listener) {
+        cartRef.addListenerForSingleValueEvent(listener);
+    }
+
+    public void removeItem(String itemId) {
+        cartRef.child(itemId).removeValue();
+    }
+
+    public void updateQuantity(String itemId, int newQty) {
+        cartRef.child(itemId).child("quantity").setValue(newQty);
+    }
+
+    public void clearCart() {
+        cartRef.removeValue();
     }
 }
