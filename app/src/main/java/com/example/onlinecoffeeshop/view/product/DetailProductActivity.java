@@ -14,9 +14,11 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.bumptech.glide.Glide;
 import com.example.onlinecoffeeshop.R;
 import com.example.onlinecoffeeshop.controller.CartController;
+import com.example.onlinecoffeeshop.controller.FavouriteController;
 import com.example.onlinecoffeeshop.controller.PopularController;
 import com.example.onlinecoffeeshop.controller.ProductController;
 import com.example.onlinecoffeeshop.model.CartItem;
+import com.example.onlinecoffeeshop.model.FavouriteItem;
 import com.example.onlinecoffeeshop.model.Product;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -39,6 +41,8 @@ public class DetailProductActivity extends AppCompatActivity {
     private PopularController popularController;
     private ProductController productController;
     private CartController cartController;
+    private ImageView favBtn;
+    private FavouriteController favouriteController;
 
 
     @Override
@@ -129,6 +133,19 @@ public class DetailProductActivity extends AppCompatActivity {
             }
         });
         backBtn.setOnClickListener(v -> finish());
+        favouriteController = new FavouriteController(userId);
+        favBtn = findViewById(R.id.fav_btn);
+        favBtn.setOnClickListener(v -> {
+            if (selectedProduct != null) {
+                FavouriteItem item = new FavouriteItem();
+                item.setProductId(selectedProduct.getProductId());
+                item.setTitle(selectedProduct.getTitle());
+                item.setImageUrl(selectedProduct.getPicUrl().get(0));
+                item.setPrice(selectedProduct.getPrice());
+                favouriteController.addFavourite(item);
+                Toast.makeText(this, "Added to favourites", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
     private void updatePriceText() {
         double total = getPriceBySize() * quantity;
