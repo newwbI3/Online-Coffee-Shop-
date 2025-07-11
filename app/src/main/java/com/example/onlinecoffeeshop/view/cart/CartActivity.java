@@ -2,7 +2,9 @@ package com.example.onlinecoffeeshop.view.cart;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +44,7 @@ public class CartActivity extends BaseActivity {
     private List<CartItem> cartItemList;
     private CartAdapter cartAdapter;
     private double totalAmount = 0;
+    private LinearLayout emptyStateCart;
 
 
     @Override
@@ -76,6 +79,7 @@ public class CartActivity extends BaseActivity {
 
 
         loadCartFromFirebase();
+        setupEmptyStateButton();
 
         findViewById(R.id.back_btn).setOnClickListener(v -> finish());
     }
@@ -88,6 +92,12 @@ public class CartActivity extends BaseActivity {
         taxTxt = findViewById(R.id.taxTxt);
         totalTxt = findViewById(R.id.totalTxt);
         checkOutBtn = findViewById(R.id.checkOut_btn);
+        emptyStateCart = findViewById(R.id.emptyStateCart);
+    }
+
+    private void setupEmptyStateButton() {
+        Button btnStartShoppingCart = findViewById(R.id.btn_start_shopping_cart);
+        btnStartShoppingCart.setOnClickListener(v -> finish());
     }
 
     private void loadCartFromFirebase() {
@@ -110,10 +120,12 @@ public class CartActivity extends BaseActivity {
                             @Override
                             public void onCartUpdated() {
                                 calculateTotal();
+                                updateEmptyState();
                             }
                         });
                         cartView.setAdapter(cartAdapter);
                         calculateTotal();
+                        updateEmptyState();
                     }
 
                     @Override
@@ -136,5 +148,17 @@ public class CartActivity extends BaseActivity {
         taxTxt.setText(String.format("%.2f$", tax));
         deliveryTxt.setText(String.format("%.2f$", deliveryFee));
         totalTxt.setText(String.format("%.2f$", totalAmount));
+    }
+
+    private void updateEmptyState() {
+        if (cartItemList.isEmpty()) {
+            cartView.setVisibility(View.GONE);
+            emptyStateCart.setVisibility(View.VISIBLE);
+            checkOutBtn.setVisibility(View.GONE);
+        } else {
+            cartView.setVisibility(View.VISIBLE);
+            emptyStateCart.setVisibility(View.GONE);
+            checkOutBtn.setVisibility(View.VISIBLE);
+        }
     }
 }
