@@ -3,8 +3,10 @@ package com.example.onlinecoffeeshop.view.product;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -29,6 +31,8 @@ public class ListProductActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private ProductController productController;
     private LinearLayout backBtn;
+    private LinearLayout emptyStateSearch;
+    private TextView tvEmptySearchTitle, tvEmptySearchSubtitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +43,18 @@ public class ListProductActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.cartView);
         progressBar = findViewById(R.id.progressBar3);
         backBtn = findViewById(R.id.back_btn);
+        emptyStateSearch = findViewById(R.id.emptyStateSearch);
+        tvEmptySearchTitle = findViewById(R.id.tv_empty_search_title);
+        tvEmptySearchSubtitle = findViewById(R.id.tv_empty_search_subtitle);
+
         backBtn.setOnClickListener(v -> finish());
+
+        Button btnBrowseAll = findViewById(R.id.btn_browse_all);
+        btnBrowseAll.setOnClickListener(v -> {
+            // Clear search and show all products
+            getIntent().removeExtra("searchQuery");
+            loadProducts();
+        });
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         productController = new ProductController();
@@ -72,6 +87,24 @@ public class ListProductActivity extends AppCompatActivity {
                 }
 
                 recyclerView.setAdapter(new ProductAdapter(ListProductActivity.this, productList));
+
+                // Show/hide empty state
+                if (productList.isEmpty()) {
+                    recyclerView.setVisibility(View.GONE);
+                    emptyStateSearch.setVisibility(View.VISIBLE);
+
+                    // Update messages based on search query
+                    if (searchQuery != null && !searchQuery.isEmpty()) {
+                        tvEmptySearchTitle.setText("Không tìm thấy \"" + searchQuery + "\"");
+                        tvEmptySearchSubtitle.setText("Thử tìm kiếm với từ khóa khác");
+                    } else {
+                        tvEmptySearchTitle.setText("Không có sản phẩm");
+                        tvEmptySearchSubtitle.setText("Danh mục này chưa có sản phẩm nào");
+                    }
+                } else {
+                    recyclerView.setVisibility(View.VISIBLE);
+                    emptyStateSearch.setVisibility(View.GONE);
+                }
             }
 
             @Override
