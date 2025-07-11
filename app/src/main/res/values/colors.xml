@@ -19,6 +19,7 @@
     <color name="darkGrey">#4E4e4e</color>
     <color name="grey">#8D8D8D</color>
     <color name="darkBrown">#220c01</color>
+    <color name="brown">#8B4513</color>
 
     <!-- Text Colors -->
     <color name="text_primary">#212121</color>

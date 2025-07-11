@@ -2,6 +2,7 @@
     <string name="app_name">Online Coffee Shop</string>
     <string name="search_anything">Search anything .....</string>
     <string name="category">Category</string>
+    <string name="categories">Categories</string>
     <string name="popular_drinks">Popular Drinks</string>
     <string name="see_all">See all</string>
     <!-- Strings used for fragments for navigation -->
