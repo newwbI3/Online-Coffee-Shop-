@@ -36,7 +36,7 @@ public class FavoriteActivity extends BaseActivity {
 
         userId = (FirebaseAuth.getInstance().getCurrentUser() != null)
                 ? FirebaseAuth.getInstance().getCurrentUser().getUid()
-                : "guest";
+                :userId;
         favouriteController = new FavouriteController(userId);
 
         recyclerViewFavorite = findViewById(R.id.recyclerViewFavorite);

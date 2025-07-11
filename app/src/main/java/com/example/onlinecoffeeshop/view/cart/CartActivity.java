@@ -106,7 +106,7 @@ public class CartActivity extends BaseActivity {
                             }
                         }
 
-                        cartAdapter = new CartAdapter(CartActivity.this, cartItemList, new CartAdapter.CartUpdateListener() {
+                        cartAdapter = new CartAdapter(CartActivity.this, cartItemList,userId, new CartAdapter.CartUpdateListener() {
                             @Override
                             public void onCartUpdated() {
                                 calculateTotal();

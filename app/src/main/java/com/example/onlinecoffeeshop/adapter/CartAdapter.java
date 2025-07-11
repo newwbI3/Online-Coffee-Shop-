@@ -25,11 +25,15 @@ public class CartAdapter  extends RecyclerView.Adapter<CartAdapter.CartViewHolde
     private Context context;
     private List<CartItem> cartItems;
     private CartUpdateListener cartUpdateListener;
-    public CartAdapter(Context context, List<CartItem> cartItems, CartUpdateListener listener) {
+    private String userId;
+
+    public CartAdapter(Context context, List<CartItem> cartItems, String userId, CartUpdateListener listener) {
         this.context = context;
         this.cartItems = cartItems;
+        this.userId = userId;
         this.cartUpdateListener = listener;
     }
+
     @NonNull
     @Override
     public CartAdapter.CartViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -61,7 +65,7 @@ public class CartAdapter  extends RecyclerView.Adapter<CartAdapter.CartViewHolde
 
         holder.removeItem.setOnClickListener(v -> {
             FirebaseDatabase.getInstance().getReference("Cart")
-                    .child("guest")
+                    .child(userId)
                     .orderByChild("productId")
                     .equalTo(item.getProductId())
                     .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -83,7 +87,7 @@ public class CartAdapter  extends RecyclerView.Adapter<CartAdapter.CartViewHolde
     }
     private void updateQuantity(CartItem item, int newQuantity) {
         FirebaseDatabase.getInstance().getReference("Cart")
-                .child("guest")
+                .child(userId)
                 .orderByChild("productId")
                 .equalTo(item.getProductId())
                 .addListenerForSingleValueEvent(new ValueEventListener() {

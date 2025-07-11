@@ -22,6 +22,7 @@ import com.example.onlinecoffeeshop.model.CartItem;
 import com.example.onlinecoffeeshop.model.Order;
 import com.example.onlinecoffeeshop.model.User;
 import com.example.onlinecoffeeshop.view.auth.LoginActivity;
+import com.example.onlinecoffeeshop.view.product.ListProductActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -161,7 +162,9 @@ public class CheckoutActivity extends AppCompatActivity {
             public void onSuccess() {
                 cartRef.removeValue();
                 Toast.makeText(CheckoutActivity.this, "Đặt hàng thành công!", Toast.LENGTH_LONG).show();
-                finish();
+                Intent intent = new Intent(CheckoutActivity.this, MainActivity.class);
+                startActivity(intent);
+
             }
 
             @Override
