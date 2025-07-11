@@ -73,6 +73,60 @@
                 android:layout_height="match_parent"
                 android:layout_marginBottom="20dp"/>
 
+            <!-- Empty State for Search Results -->
+            <LinearLayout
+                android:id="@+id/emptyStateSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="32dp"
+                android:visibility="gone">
+
+                <!-- Empty State Icon -->
+                <ImageView
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_marginBottom="24dp"
+                    android:src="@drawable/coffee_svgrepo_com"
+                    android:alpha="0.3" />
+
+                <!-- Main Message -->
+                <TextView
+                    android:id="@+id/tv_empty_search_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Không tìm thấy sản phẩm"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/darkBrown"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center" />
+
+                <!-- Sub Message -->
+                <TextView
+                    android:id="@+id/tv_empty_search_subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Thử tìm kiếm với từ khóa khác"
+                    android:textSize="14sp"
+                    android:textColor="@color/grey"
+                    android:gravity="center"
+                    android:layout_marginBottom="24dp" />
+
+                <!-- Action Button -->
+                <Button
+                    android:id="@+id/btn_browse_all"
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Xem tất cả sản phẩm"
+                    android:backgroundTint="@color/darkBrown"
+                    android:textColor="@color/white"
+                    android:paddingHorizontal="24dp" />
+
+            </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 
