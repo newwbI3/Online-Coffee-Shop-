@@ -5,7 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.cart.CartActivity">
+    tools:context=".view.cart.CartActivity"
+    android:background="@color/lightCream">
 
     <ScrollView
         android:id="@+id/scrollView4"
@@ -195,11 +196,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="80dp"
             android:background="@drawable/dark_brow_bg"
             android:text="Procced to Checkout"
             android:textColor="@color/white"
             android:textSize="16sp" />
 
     </LinearLayout>
+
+    <!-- Include Custom Bottom Navigation -->
+    <include layout="@layout/custom_bottom_navigation" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

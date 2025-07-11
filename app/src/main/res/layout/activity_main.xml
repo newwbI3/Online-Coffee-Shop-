@@ -316,4 +316,8 @@
             </LinearLayout>
         </com.google.android.material.bottomnavigation.BottomNavigationView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <!-- Include Custom Bottom Navigation -->
+    <include layout="@layout/custom_bottom_navigation" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

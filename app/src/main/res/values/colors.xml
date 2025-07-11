@@ -30,4 +30,18 @@
     <color name="error_color">#F44336</color>
     <color name="warning_color">#FF9800</color>
     <color name="info_color">#2196F3</color>
+
+    <!-- CoffeeShop Color   -->
+    <color name="lightGrey">#f6f6f6</color>
+    <color name="brown">#7e4616</color>
+
+    <!-- Bottom Navigation Colors -->
+    <color name="bottom_nav_background">#2D1B14</color>
+    <color name="bottom_nav_gradient_start">#3E2723</color>
+    <color name="bottom_nav_gradient_end">#1B0E0A</color>
+    <color name="bottom_nav_selected">#FF8A65</color>
+    <color name="bottom_nav_unselected">#BCAAA4</color>
+    <color name="bottom_nav_indicator">#FF6F00</color>
+    <color name="bottom_nav_ripple">#33FF8A65</color>
+
 </resources>
