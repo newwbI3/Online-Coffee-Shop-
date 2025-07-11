@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +27,11 @@ import com.example.onlinecoffeeshop.R;
 import com.example.onlinecoffeeshop.controller.AuthController;
 import com.example.onlinecoffeeshop.model.User;
 import com.example.onlinecoffeeshop.view.auth.LoginActivity;
+import com.example.onlinecoffeeshop.view.cart.CartActivity;
+import com.example.onlinecoffeeshop.view.favorite.FavoriteActivity;
+import com.example.onlinecoffeeshop.view.order.OrderHistoryActivity;
+import com.example.onlinecoffeeshop.MainActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
@@ -49,6 +55,8 @@ public class ProfileActivity extends BaseActivity {
     private TextView tvEmail, tvRole;
     private Button btnUpdateProfile, btnChangePassword, btnLogout;
     private ProgressBar progressBar;
+    private BottomNavigationView bottomNavigation;
+    private LinearLayout backBtn;
     
     private AuthController authController;
     private User currentUser;
@@ -65,6 +73,7 @@ public class ProfileActivity extends BaseActivity {
         initViews();
         initController();
         setupClickListeners();
+        setupBottomNavigation();
 
         // Test Firestore data first
         testFirestoreData();
@@ -97,6 +106,12 @@ public class ProfileActivity extends BaseActivity {
         btnChangePassword = findViewById(R.id.btn_change_password);
         btnLogout = findViewById(R.id.btn_logout);
         progressBar = findViewById(R.id.progress_bar);
+
+        // Header components
+        backBtn = findViewById(R.id.back_btn);
+
+        // Bottom navigation
+        bottomNavigation = findViewById(R.id.bottom_navigation);
     }
     
     private void initController() {
@@ -121,12 +136,48 @@ public class ProfileActivity extends BaseActivity {
         // Logout button click listener
         btnLogout.setOnClickListener(v -> showLogoutDialog());
 
-        // Add refresh function for testing - long press on toolbar
-        findViewById(R.id.toolbar).setOnLongClickListener(v -> {
+        // Header back button
+        backBtn.setOnClickListener(v -> finish());
+
+        // Add refresh function for testing - long press on back button
+        backBtn.setOnLongClickListener(v -> {
             Toast.makeText(this, "Refreshing data...", Toast.LENGTH_SHORT).show();
             loadUserDataFromFirestore();
             return true;
         });
+    }
+
+    private void setupBottomNavigation() {
+        if (bottomNavigation != null) {
+            // Set current item as profile
+            bottomNavigation.setSelectedItemId(R.id.nav_profile);
+
+            bottomNavigation.setOnItemSelectedListener(item -> {
+                int itemId = item.getItemId();
+
+                if (itemId == R.id.nav_home) {
+                    startActivity(new Intent(this, MainActivity.class));
+                    finish();
+                    return true;
+                } else if (itemId == R.id.nav_favorite) {
+                    startActivity(new Intent(this, FavoriteActivity.class));
+                    finish();
+                    return true;
+                } else if (itemId == R.id.nav_cart) {
+                    startActivity(new Intent(this, CartActivity.class));
+                    finish();
+                    return true;
+                } else if (itemId == R.id.nav_orders) {
+                    startActivity(new Intent(this, OrderHistoryActivity.class));
+                    finish();
+                    return true;
+                } else if (itemId == R.id.nav_profile) {
+                    // Already in profile, do nothing
+                    return true;
+                }
+                return false;
+            });
+        }
     }
 
     private void loadUserDataFromFirestore() {

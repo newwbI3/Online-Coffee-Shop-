@@ -28,6 +28,7 @@ import com.example.onlinecoffeeshop.model.Product;
 import com.example.onlinecoffeeshop.view.auth.LoginActivity;
 import com.example.onlinecoffeeshop.view.cart.CartActivity;
 import com.example.onlinecoffeeshop.view.product.ListProductActivity;
+import com.example.onlinecoffeeshop.utils.RoleAuthenticator;
 import com.example.onlinecoffeeshop.view.profile.ProfileActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -53,6 +54,9 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
 
         controller = new HomeController();
+
+        // Check user role on app start
+        checkUserRoleOnStart();
 
         initView();
 
@@ -204,6 +208,28 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
+
+    private void checkUserRoleOnStart() {
+        RoleAuthenticator.checkUserRole(new RoleAuthenticator.RoleCheckCallback() {
+            @Override
+            public void onRoleChecked(String role) {
+                // If user has manager role, redirect to ManagerActivity
+                if (RoleAuthenticator.isManagerRole(role)) {
+                    RoleAuthenticator.checkUserRoleAndNavigate(MainActivity.this);
+                }
+                // Otherwise, stay in MainActivity (normal user flow)
+            }
+
+            @Override
+            public void onError(String error) {
+                // If error checking role, redirect to login
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
             }
         });
     }

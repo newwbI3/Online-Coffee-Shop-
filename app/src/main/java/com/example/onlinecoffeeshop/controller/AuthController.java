@@ -7,6 +7,7 @@ import android.widget.Toast;
 import com.example.onlinecoffeeshop.MainActivity;
 import com.example.onlinecoffeeshop.model.User;
 import com.example.onlinecoffeeshop.view.auth.LoginActivity;
+import com.example.onlinecoffeeshop.utils.RoleAuthenticator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -70,7 +71,8 @@ public class AuthController {
                 .addOnCompleteListener(activity, task -> {
                     if (task.isSuccessful()) {
                         Toast.makeText(activity, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-                        navigateToMain(activity);
+                        // Check user role and navigate accordingly
+                        RoleAuthenticator.checkUserRoleAndNavigate(activity);
                     } else {
                         Toast.makeText(activity, "Đăng nhập thất bại: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
