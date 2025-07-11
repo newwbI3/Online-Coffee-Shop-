@@ -9,6 +9,8 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.onlinecoffeeshop.base.BaseActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -30,7 +32,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CartActivity extends AppCompatActivity {
+public class CartActivity extends BaseActivity {
     private  String userId ;
     private final double taxRate = 0.2;
     private final double deliveryFee = 2.5;

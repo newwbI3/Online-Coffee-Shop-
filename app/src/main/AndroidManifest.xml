@@ -53,6 +53,9 @@
         <activity
             android:name=".view.favorite.FavoriteActivity"
             android:exported="false" />
+        <activity
+            android:name=".view.order.OrderHistoryActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

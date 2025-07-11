@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.onlinecoffeeshop.base.BaseActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.onlinecoffeeshop.R;
@@ -29,13 +31,13 @@ import java.util.Calendar;
 import java.util.Map;
 import java.util.Locale;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends BaseActivity {
     private static final String TAG = "ProfileActivity";
     
     private ImageView ivAvatar;
     private EditText etFullname, etDob, etAddress, etPhone;
     private TextView tvEmail, tvRole;
-    private Button btnUpdateProfile, btnChangePassword;
+    private Button btnUpdateProfile, btnChangePassword, btnLogout;
     private ProgressBar progressBar;
     
     private AuthController authController;
@@ -77,6 +79,7 @@ public class ProfileActivity extends AppCompatActivity {
         tvRole = findViewById(R.id.tv_role);
         btnUpdateProfile = findViewById(R.id.btn_update_profile);
         btnChangePassword = findViewById(R.id.btn_change_password);
+        btnLogout = findViewById(R.id.btn_logout);
         progressBar = findViewById(R.id.progress_bar);
     }
     
@@ -87,15 +90,18 @@ public class ProfileActivity extends AppCompatActivity {
     private void setupClickListeners() {
 //        btnUpdateProfile.setOnClickListener(v -> updateProfile());
 //        btnChangePassword.setOnClickListener(v -> showChangePasswordDialog());
-        
+
         etDob.setOnClickListener(v -> showDatePicker());
         etDob.setFocusable(false);
         etDob.setClickable(true);
-        
+
         ivAvatar.setOnClickListener(v -> {
             // TODO: Implement avatar selection
             Toast.makeText(this, "Chức năng chọn avatar sẽ được cập nhật sau", Toast.LENGTH_SHORT).show();
         });
+
+        // Logout button click listener
+        btnLogout.setOnClickListener(v -> showLogoutDialog());
     }
     
     private void loadUserProfile() {
@@ -315,14 +321,16 @@ public class ProfileActivity extends AppCompatActivity {
         new AlertDialog.Builder(this)
                 .setTitle("Đăng xuất")
                 .setMessage("Bạn có chắc chắn muốn đăng xuất?")
+                .setIcon(R.drawable.ic_logout)
                 .setPositiveButton("Đăng xuất", (dialog, which) -> {
+                    // Show loading while logging out
+                    showLoading(true);
+
+                    // Use AuthController's signOut method (it handles navigation)
                     authController.signOut(this);
-                    Intent intent = new Intent(this, LoginActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    finish();
                 })
-                .setNegativeButton("Hủy", null)
+                .setNegativeButton("Hủy", (dialog, which) -> dialog.dismiss())
+                .setCancelable(false)
                 .show();
     }
 }

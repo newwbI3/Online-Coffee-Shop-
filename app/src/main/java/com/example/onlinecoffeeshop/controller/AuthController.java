@@ -11,6 +11,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class AuthController {
     private FirebaseAuth auth;
     private FirebaseFirestore firestore;
@@ -30,9 +33,23 @@ public class AuthController {
                             user.setUid(firebaseUser.getUid());
                             user.setEmail(email);
 
-                            // Save user to Firestore
+                            // Create optimized user data map - only essential fields
+                            Map<String, Object> userData = new HashMap<>();
+                            userData.put("uid", firebaseUser.getUid());
+                            userData.put("fullname", user.getFullname());
+                            userData.put("email", email);
+                            userData.put("phone", user.getPhone());
+                            userData.put("address", user.getAddress());
+                            userData.put("dob", user.getDob());
+                            userData.put("role", user.getRole() != null ? user.getRole() : "user");
+                            // Only save avatar if it's not empty
+                            if (user.getAvatar() != null && !user.getAvatar().trim().isEmpty()) {
+                                userData.put("avatar", user.getAvatar());
+                            }
+
+                            // Save optimized user data to Firestore
                             firestore.collection("users").document(firebaseUser.getUid())
-                                    .set(user)
+                                    .set(userData)
                                     .addOnSuccessListener(aVoid -> {
                                         Toast.makeText(activity, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
                                         navigateToLogin(activity);
