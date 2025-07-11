@@ -2,8 +2,6 @@ package com.example.onlinecoffeeshop;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -45,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView listProductView;
     private EditText searchEditText;
     private HomeController controller;
-    private LinearLayout cartLayout, profileLayout;
+    private LinearLayout cartLayout, profileLayout, favoriteLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         OrderProduct();
         getLayoutProfile();
         getLayoutCart();
+        getLayoutFavorite();
     }
 
     private void OrderProduct() {
@@ -111,6 +110,13 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void getLayoutFavorite() {
+        favoriteLayout.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, com.example.onlinecoffeeshop.view.favorite.FavoriteActivity.class);
+            startActivity(intent);
+        });
+    }
+
     private void initView() {
         imgBanner = findViewById(R.id.imgBanner);
         progressBarBanner = findViewById(R.id.progressBarBanner);
@@ -121,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
         listProductView = findViewById(R.id.listProductView);
         cartLayout = findViewById(R.id.layoutCart);
         profileLayout = findViewById(R.id.layoutProfile);
+        favoriteLayout = findViewById(R.id.layoutFavorite);
         mAuth = FirebaseAuth.getInstance();
         searchEditText = findViewById(R.id.searchTxt);
         searchView = findViewById(R.id.searchView);
