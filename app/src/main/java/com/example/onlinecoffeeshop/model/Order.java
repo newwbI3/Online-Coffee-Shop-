@@ -16,6 +16,7 @@ public class Order {
     private List<CartItem> items;
     private double total;
     private long timestamp;
+    private String shipmentStatus; // ✅ NEW FIELD
 
     // Bắt buộc cho Firebase
     public Order() {}
@@ -23,7 +24,7 @@ public class Order {
     // Full constructor dùng trong Firebase write
     public Order(String orderId, String userId, String fullName, String phone, String email,
                  String address, String note, String deliveryMethod, String paymentMethod,
-                 List<CartItem> items, double total, long timestamp) {
+                 List<CartItem> items, double total, long timestamp, String shipmentStatus) {
         this.orderId = orderId;
         this.userId = userId;
         this.fullName = fullName;
@@ -36,11 +37,12 @@ public class Order {
         this.items = items;
         this.total = total;
         this.timestamp = timestamp;
+        this.shipmentStatus = shipmentStatus;
     }
 
     // Constructor tiện dụng khi đã có đối tượng User
     public Order(String orderId, User user, String note, String deliveryMethod,
-                 String paymentMethod, List<CartItem> items, double total, long timestamp) {
+                 String paymentMethod, List<CartItem> items, double total, long timestamp, String shipmentStatus) {
         this.orderId = orderId;
         this.userId = user.getUid();
         this.fullName = user.getFullname();
@@ -53,6 +55,7 @@ public class Order {
         this.items = items;
         this.total = total;
         this.timestamp = timestamp;
+        this.shipmentStatus = shipmentStatus;
     }
 
     // Getters & Setters
@@ -151,5 +154,13 @@ public class Order {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String getShipmentStatus() {
+        return shipmentStatus;
+    }
+
+    public void setShipmentStatus(String shipmentStatus) {
+        this.shipmentStatus = shipmentStatus;
     }
 }

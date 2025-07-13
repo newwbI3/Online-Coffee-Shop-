@@ -59,6 +59,8 @@ public class OrderController {
                                 orderList.add(order);
                             }
                         }
+                        orderList.sort((o1, o2) -> Long.compare(o2.getTimestamp(), o1.getTimestamp()));
+
                         listener.onSuccess(orderList);
                     }
 
@@ -68,6 +70,7 @@ public class OrderController {
                     }
                 });
     }
+
     public void cancelOrder(String orderId, OnOrderCancelledListener listener) {
         orderRef.child(orderId).removeValue()
                 .addOnSuccessListener(unused -> listener.onSuccess())
@@ -92,5 +95,7 @@ public class OrderController {
         void onSuccess();
         void onFailure(String message);
     }
-
+    public void updateOrderStatus(String orderId, String newStatus) {
+        orderRef.child(orderId).child("shipmentStatus").setValue(newStatus);
+    }
 }

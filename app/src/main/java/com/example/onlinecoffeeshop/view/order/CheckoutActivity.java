@@ -154,7 +154,7 @@ public class CheckoutActivity extends AppCompatActivity {
         Log.d("CHECKOUT_LOG", "Cart Size: " + (cartItems != null ? cartItems.size() : 0));
 
         User user = new User(userId, fullName, phone, email, address);
-        Order order = new Order(orderId, user, note, deliveryMethod, paymentMethod, cartItems, totalAmount, timestamp);
+        Order order = new Order(orderId, user, note, deliveryMethod, paymentMethod, cartItems, totalAmount, timestamp, "processing");
 
         OrderController orderController = new OrderController();
         orderController.createOrder(order, new OrderController.OnOrderCreatedListener() {
