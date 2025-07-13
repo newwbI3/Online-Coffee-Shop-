@@ -17,6 +17,7 @@ import com.example.onlinecoffeeshop.R;
 import com.example.onlinecoffeeshop.base.BaseActivity;
 import com.example.onlinecoffeeshop.controller.AuthController;
 import com.example.onlinecoffeeshop.model.User;
+import com.example.onlinecoffeeshop.view.admin.AdminProductActivity;
 import com.example.onlinecoffeeshop.view.auth.LoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -39,7 +40,6 @@ public class ManagerActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manager);
-        
         initFirebase();
         setupToolbar();
         initViews();
@@ -75,8 +75,8 @@ public class ManagerActivity extends BaseActivity {
     
     private void setupClickListeners() {
         cardProductManagement.setOnClickListener(v -> {
-            Toast.makeText(this, "Quản lý sản phẩm", Toast.LENGTH_SHORT).show();
-            // TODO: Navigate to ProductManagementActivity
+            Intent intent = new Intent(ManagerActivity.this, AdminProductActivity.class);
+            startActivity(intent);
         });
         
         cardOrderManagement.setOnClickListener(v -> {
@@ -100,7 +100,6 @@ public class ManagerActivity extends BaseActivity {
             redirectToLogin();
             return;
         }
-        
         String userId = mAuth.getCurrentUser().getUid();
         Log.d(TAG, "Loading manager data for user: " + userId);
         
@@ -202,7 +201,8 @@ public class ManagerActivity extends BaseActivity {
         startActivity(intent);
         finish();
     }
-    
+
+
     @Override
     protected void onResume() {
         super.onResume();
