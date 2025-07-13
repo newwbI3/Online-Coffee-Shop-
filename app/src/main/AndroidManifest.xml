@@ -61,6 +61,9 @@
         <activity
             android:name=".view.order.OrderHistoryActivity"
             android:exported="false" />
+        <activity android:name=".view.admin.AdminProductActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>

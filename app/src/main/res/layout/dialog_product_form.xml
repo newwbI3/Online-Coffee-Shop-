@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="16dp"
+    android:background="@color/coffeeAccent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@android:color/darker_gray"
+        android:showDividers="middle">
+
+        <!-- Tên sản phẩm -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:text="Tên:"
+                android:textStyle="bold"
+                android:textColor="@color/coffeePrimary"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:gravity="start|center_vertical" />
+
+            <EditText
+                android:id="@+id/edtTitle"
+                android:hint="Nhập tên"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/textPrimary"
+                android:backgroundTint="@color/coffeePrimary" />
+        </LinearLayout>
+
+        <!-- Mô tả -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:text="Mô tả:"
+                android:textStyle="bold"
+                android:textColor="@color/coffeePrimary"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:gravity="start|top"
+                android:paddingTop="6dp"/>
+
+            <EditText
+                android:id="@+id/edtDescription"
+                android:hint="Mô tả sản phẩm"
+                android:minLines="3"
+                android:gravity="top"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/textPrimary"
+                android:backgroundTint="@color/coffeePrimary" />
+        </LinearLayout>
+
+        <!-- Extra -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:text="Extra:"
+                android:textStyle="bold"
+                android:textColor="@color/coffeePrimary"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:gravity="start|center_vertical" />
+
+            <EditText
+                android:id="@+id/edtExtra"
+                android:hint="Thông tin thêm"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/textPrimary"
+                android:backgroundTint="@color/coffeePrimary" />
+        </LinearLayout>
+
+        <!-- Hình ảnh -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:text="Hình ảnh:"
+                android:textStyle="bold"
+                android:textColor="@color/coffeePrimary"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:gravity="start|center_vertical" />
+
+            <EditText
+                android:id="@+id/edtImage"
+                android:hint="URL ảnh sản phẩm"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/textPrimary"
+                android:backgroundTint="@color/coffeePrimary" />
+        </LinearLayout>
+
+        <!-- Giá -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:text="Giá:"
+                android:textStyle="bold"
+                android:textColor="@color/coffeePrimary"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:gravity="start|center_vertical" />
+
+            <EditText
+                android:id="@+id/edtPrice"
+                android:hint="$"
+                android:inputType="numberDecimal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/textPrimary"
+                android:backgroundTint="@color/coffeePrimary" />
+        </LinearLayout>
+
+        <!-- Rating -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:text="Rating:"
+                android:textStyle="bold"
+                android:textColor="@color/coffeePrimary"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:gravity="start|center_vertical" />
+
+            <EditText
+                android:id="@+id/edtRating"
+                android:hint="0-5"
+                android:inputType="numberDecimal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/textPrimary"
+                android:backgroundTint="@color/coffeePrimary" />
+        </LinearLayout>
+
+        <!-- Mã danh mục -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:text="Danh mục:"
+                android:textStyle="bold"
+                android:textColor="@color/coffeePrimary"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:gravity="start|center_vertical" />
+
+            <EditText
+                android:id="@+id/edtCategoryId"
+                android:hint="drinks, cake..."
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/textPrimary"
+                android:backgroundTint="@color/coffeePrimary" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
