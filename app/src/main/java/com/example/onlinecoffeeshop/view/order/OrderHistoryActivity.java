@@ -30,7 +30,7 @@ public class OrderHistoryActivity extends BaseActivity {
     private ImageView backBtnOrder;
 
     private List<Order> orderList;
-    private com.example.onlinecoffeeshop.view.order.OrderAdapter orderAdapter;
+    private com.example.onlinecoffeeshop.adapter.OrderAdapter orderAdapter;
     private OrderController orderController;
 
     @Override
@@ -56,7 +56,7 @@ public class OrderHistoryActivity extends BaseActivity {
         backBtnOrder = findViewById(R.id.backBtnOrder);
 
         orderList = new ArrayList<>();
-        orderAdapter = new com.example.onlinecoffeeshop.view.order.OrderAdapter(this, orderList);
+        orderAdapter = new com.example.onlinecoffeeshop.adapter.OrderAdapter(this, orderList);
         orderRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         orderRecyclerView.setAdapter(orderAdapter);
 

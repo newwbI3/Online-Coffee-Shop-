@@ -15,40 +15,21 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-         Order Info
-        <TextView
-            android:id="@+id/tv_order_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Mã đơn: #123456"
-            android:textColor="@color/darkBrown"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tv_order_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ngày đặt: 12/07/2025 18:00"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            android:layout_marginTop="4dp" />
-
-        <!-- Items section -->
+        <!-- Item label -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Item:"
             android:textColor="@color/black"
             android:textStyle="bold"
-            android:layout_marginTop="12dp" />
+            android:layout_marginBottom="4dp" />
 
+        <!-- Items container -->
         <LinearLayout
             android:id="@+id/items_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="4dp" />
+            android:orientation="vertical" />
 
         <!-- Total -->
         <LinearLayout
@@ -63,7 +44,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Total"
+                android:text="Tổng tiền:"
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 android:layout_marginEnd="8dp" />
@@ -82,19 +63,36 @@
             android:id="@+id/tv_order_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Status: Đang giao"
+            android:text="Trạng thái: Đang giao"
             android:textColor="@color/orange"
             android:textSize="14sp"
             android:layout_marginTop="4dp" />
-        <Button
-            android:id="@+id/btn_confirm_received"
-            android:layout_width="wrap_content"
+
+        <!-- Action Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Đã nhận hàng"
-            android:layout_gravity="end"
-            android:layout_marginTop="8dp"
-            android:backgroundTint="@color/darkBrown"
-            android:textColor="@android:color/white"
-            android:visibility="gone"/>
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp"
+            android:gravity="end">
+
+            <Button
+                android:id="@+id/btn_view_details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Xem chi tiết"
+                android:layout_marginEnd="8dp"
+                android:backgroundTint="@color/grey"
+                android:textColor="@android:color/white" />
+
+            <Button
+                android:id="@+id/btn_confirm_received"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Đã nhận hàng"
+                android:backgroundTint="@color/darkBrown"
+                android:textColor="@android:color/white"
+                android:visibility="gone" />
+        </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

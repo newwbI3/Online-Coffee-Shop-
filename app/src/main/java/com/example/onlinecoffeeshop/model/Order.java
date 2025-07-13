@@ -1,8 +1,12 @@
 package com.example.onlinecoffeeshop.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.List;
 
-public class Order {
+public class Order implements Parcelable {
 
     private String orderId;
     private String userId;
@@ -16,12 +20,10 @@ public class Order {
     private List<CartItem> items;
     private double total;
     private long timestamp;
-    private String shipmentStatus; // ✅ NEW FIELD
+    private String shipmentStatus;
 
-    // Bắt buộc cho Firebase
     public Order() {}
 
-    // Full constructor dùng trong Firebase write
     public Order(String orderId, String userId, String fullName, String phone, String email,
                  String address, String note, String deliveryMethod, String paymentMethod,
                  List<CartItem> items, double total, long timestamp, String shipmentStatus) {
@@ -40,25 +42,63 @@ public class Order {
         this.shipmentStatus = shipmentStatus;
     }
 
-    // Constructor tiện dụng khi đã có đối tượng User
     public Order(String orderId, User user, String note, String deliveryMethod,
                  String paymentMethod, List<CartItem> items, double total, long timestamp, String shipmentStatus) {
-        this.orderId = orderId;
-        this.userId = user.getUid();
-        this.fullName = user.getFullname();
-        this.phone = user.getPhone();
-        this.email = user.getEmail();
-        this.address = user.getAddress();
-        this.note = note;
-        this.deliveryMethod = deliveryMethod;
-        this.paymentMethod = paymentMethod;
-        this.items = items;
-        this.total = total;
-        this.timestamp = timestamp;
-        this.shipmentStatus = shipmentStatus;
+        this(orderId, user.getUid(), user.getFullname(), user.getPhone(), user.getEmail(),
+                user.getAddress(), note, deliveryMethod, paymentMethod, items, total, timestamp, shipmentStatus);
     }
 
-    // Getters & Setters
+    protected Order(Parcel in) {
+        orderId = in.readString();
+        userId = in.readString();
+        fullName = in.readString();
+        phone = in.readString();
+        email = in.readString();
+        address = in.readString();
+        note = in.readString();
+        deliveryMethod = in.readString();
+        paymentMethod = in.readString();
+        items = new ArrayList<>();
+        in.readList(items, CartItem.class.getClassLoader());
+        total = in.readDouble();
+        timestamp = in.readLong();
+        shipmentStatus = in.readString();
+    }
+
+    public static final Creator<Order> CREATOR = new Creator<Order>() {
+        @Override
+        public Order createFromParcel(Parcel in) {
+            return new Order(in);
+        }
+
+        @Override
+        public Order[] newArray(int size) {
+            return new Order[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int flags) {
+        parcel.writeString(orderId);
+        parcel.writeString(userId);
+        parcel.writeString(fullName);
+        parcel.writeString(phone);
+        parcel.writeString(email);
+        parcel.writeString(address);
+        parcel.writeString(note);
+        parcel.writeString(deliveryMethod);
+        parcel.writeString(paymentMethod);
+        parcel.writeList(items);
+        parcel.writeDouble(total);
+        parcel.writeLong(timestamp);
+        parcel.writeString(shipmentStatus);
+    }
+
 
     public String getOrderId() {
         return orderId;

@@ -1,4 +1,4 @@
-package com.example.onlinecoffeeshop.view.order;
+package com.example.onlinecoffeeshop.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -48,9 +48,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
         Order order = orderList.get(position);
 
-        holder.tvOrderId.setText("Mã đơn: " + order.getOrderId());
         holder.tvOrderTotal.setText("Tổng tiền: " + formatCurrency(order.getTotal()));
-        holder.tvOrderDate.setText("Ngày đặt: " + formatDate(order.getTimestamp()));
         holder.tvOrderStatus.setText("Trạng thái: " + mapStatus(order.getShipmentStatus()));
 
         // Clear and re-add all items
@@ -71,7 +69,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             holder.itemsContainer.addView(itemView);
         }
 
-        // Handle confirmation button
+        // Show/hide confirm button based on status
         if ("Đang xử lý".equals(mapStatus(order.getShipmentStatus())) || "Đang giao".equals(mapStatus(order.getShipmentStatus()))) {
             holder.btnConfirmReceived.setVisibility(View.VISIBLE);
             holder.btnConfirmReceived.setOnClickListener(v -> {
@@ -83,6 +81,12 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         } else {
             holder.btnConfirmReceived.setVisibility(View.GONE);
         }
+
+        // Handle view details
+        holder.btnViewDetails.setOnClickListener(v -> {
+            Toast.makeText(context, "Xem chi tiết đơn: " + order.getOrderId(), Toast.LENGTH_SHORT).show();
+            // TODO: Launch OrderDetailActivity if needed
+        });
     }
 
     @Override
@@ -93,16 +97,17 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     public static class OrderViewHolder extends RecyclerView.ViewHolder {
         TextView tvOrderId, tvOrderTotal, tvOrderDate, tvOrderStatus;
         LinearLayout itemsContainer;
-        Button btnConfirmReceived;
+        Button btnConfirmReceived, btnViewDetails; // 👈 Add this
 
         public OrderViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvOrderId = itemView.findViewById(R.id.tv_order_id);
+
             tvOrderTotal = itemView.findViewById(R.id.tv_order_total);
-            tvOrderDate = itemView.findViewById(R.id.tv_order_date);
+
             tvOrderStatus = itemView.findViewById(R.id.tv_order_status);
             itemsContainer = itemView.findViewById(R.id.items_container);
             btnConfirmReceived = itemView.findViewById(R.id.btn_confirm_received);
+            btnViewDetails = itemView.findViewById(R.id.btn_view_details); // 👈 Init
         }
     }
 
