@@ -28,28 +28,80 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Họ và tên"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:layout_marginBottom="8dp" />
 
         <EditText
             android:id="@+id/phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Số điện thoại"
-            android:inputType="phone" />
+            android:inputType="phone"
+            android:layout_marginBottom="8dp" />
 
         <EditText
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Email (nếu có)"
-            android:inputType="textEmailAddress" />
+            android:hint="Email (tùy chọn)"
+            android:inputType="textEmailAddress"
+            android:layout_marginBottom="8dp" />
 
-        <EditText
-            android:id="@+id/address"
+        <!-- Address Selection Section -->
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Địa chỉ nhận hàng (số nhà, đường, phường, quận, tỉnh)"
-            android:inputType="textPostalAddress" />
+            android:text="Địa chỉ nhận hàng"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="@color/darkBrown"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Province Search View -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:hint="Tìm kiếm tỉnh/thành phố"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+
+            <AutoCompleteTextView
+                android:id="@+id/provinceSearchView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapWords"
+                android:maxLines="1"
+                android:textSize="16sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Ward Search View -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:hint="Tìm kiếm phường/xã"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+
+            <AutoCompleteTextView
+                android:id="@+id/wardSearchView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapWords"
+                android:maxLines="1"
+                android:textSize="16sp"
+                android:enabled="false" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <EditText
+            android:id="@+id/detailAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Số nhà, tên đường"
+            android:inputType="textPostalAddress"
+            android:layout_marginBottom="8dp" />
 
         <!-- Phương thức giao hàng -->
         <TextView
@@ -57,21 +109,24 @@
             android:layout_height="wrap_content"
             android:text="Phương thức giao hàng"
             android:textStyle="bold"
-            android:layout_marginTop="16dp" />
+            android:textSize="16sp"
+            android:textColor="@color/darkBrown"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp" />
 
         <RadioGroup
             android:id="@+id/deliveryMethod"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
             <RadioButton
+                android:id="@+id/homeDelivery"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Giao nhanh" />
+                android:text="Giao hàng tận nơi"
+                android:checked="true" />
             <RadioButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Giao tiêu chuẩn" />
-            <RadioButton
+                android:id="@+id/pickupDelivery"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Nhận tại cửa hàng" />
@@ -83,39 +138,59 @@
             android:layout_height="wrap_content"
             android:text="Phương thức thanh toán"
             android:textStyle="bold"
-            android:layout_marginTop="16dp" />
+            android:textSize="16sp"
+            android:textColor="@color/darkBrown"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp" />
 
         <RadioGroup
             android:id="@+id/paymentMethod"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
             <RadioButton
+                android:id="@+id/codPayment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Thanh toán khi nhận hàng (COD)" />
+                android:text="Thanh toán khi nhận hàng (COD)"
+                android:checked="true" />
             <RadioButton
+                android:id="@+id/bankTransfer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Chuyển khoản ngân hàng" />
             <RadioButton
+                android:id="@+id/zaloPayment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="ZaloPay" />
             <RadioButton
+                android:id="@+id/qrPayment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="QR Code" />
         </RadioGroup>
 
         <!-- Ghi chú -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ghi chú"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="@color/darkBrown"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp" />
+
         <EditText
             android:id="@+id/note"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Ghi chú cho đơn hàng (nếu có)"
+            android:hint="Ghi chú cho đơn hàng (tùy chọn)"
             android:inputType="textMultiLine"
             android:minLines="2"
-            android:maxLines="4" />
+            android:maxLines="4"
+            android:layout_marginBottom="16dp" />
 
         <!-- Tổng thanh toán -->
         <TextView
@@ -126,7 +201,8 @@
             android:textStyle="bold"
             android:textSize="18sp"
             android:layout_marginTop="16dp"
-            android:textColor="@color/darkBrown" />
+            android:textColor="@color/darkBrown"
+            android:layout_marginBottom="16dp" />
 
         <!-- Nút đặt hàng -->
         <androidx.appcompat.widget.AppCompatButton
@@ -137,7 +213,9 @@
             android:layout_marginTop="16dp"
             android:background="@drawable/dark_brow_bg"
             android:textColor="@color/white"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:padding="16dp" />
 
     </LinearLayout>
 </ScrollView>

@@ -37,7 +37,7 @@ import java.util.List;
 public class CartActivity extends BaseActivity {
     private  String userId ;
     private final double taxRate = 0.2;
-    private final double deliveryFee = 2.5;
+    // private final double deliveryFee = 2.5; // Bỏ delivery fee
     private Button checkOutBtn;
     private RecyclerView cartView;
     private TextView totalFeeTxt, deliveryTxt, taxTxt, totalTxt;
@@ -147,11 +147,11 @@ public class CartActivity extends BaseActivity {
         }
 
         double tax = subtotal * taxRate;
-        totalAmount = subtotal + tax + deliveryFee;
+        totalAmount = subtotal + tax; // Bỏ delivery fee
 
         totalFeeTxt.setText(String.format("%.2f$", subtotal));
         taxTxt.setText(String.format("%.2f$", tax));
-        deliveryTxt.setText(String.format("%.2f$", deliveryFee));
+        deliveryTxt.setText("0.00$"); // Set delivery fee to 0
         totalTxt.setText(String.format("%.2f$", totalAmount));
     }
 
