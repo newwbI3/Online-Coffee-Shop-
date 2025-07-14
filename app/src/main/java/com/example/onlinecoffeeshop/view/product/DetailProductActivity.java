@@ -131,17 +131,19 @@ public class DetailProductActivity extends AppCompatActivity {
                 item.setPrice(getPriceBySize());
                 item.setQuantity(quantity);
 
-                String cartId = UUID.randomUUID().toString();
-                FirebaseDatabase.getInstance().getReference("Cart")
-                        .child(userId)  // ✅ đúng theo người dùng đã login
-                        .child(cartId)
-                        .setValue(item)
-                        .addOnSuccessListener(unused -> {
-                            Toast.makeText(this, "Đã thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
-                        })
-                        .addOnFailureListener(e -> {
-                            Toast.makeText(this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        });
+                // Use the updated CartController with duplicate checking
+                CartController cartController = new CartController(userId);
+                cartController.addToCart(item, new CartController.OnCartActionListener() {
+                    @Override
+                    public void onSuccess(String message) {
+                        Toast.makeText(DetailProductActivity.this, message, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(String error) {
+                        Toast.makeText(DetailProductActivity.this, error, Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
         backBtn.setOnClickListener(v -> finish());
