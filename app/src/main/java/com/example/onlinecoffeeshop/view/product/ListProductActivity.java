@@ -18,6 +18,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,6 +50,10 @@ public class ListProductActivity extends AppCompatActivity {
     private Button sortNameAscBtn, sortNameDescBtn, sortPriceAscBtn, sortPriceDescBtn,
                    sortRatingAscBtn, sortRatingDescBtn, clearFiltersBtn;
 
+    // Layout and View UI components
+    private ImageView listViewBtn, gridViewBtn;
+    private Button itemsPerPage6Btn, itemsPerPage12Btn, itemsPerPage24Btn, itemsPerPage48Btn;
+
     // Pagination UI components
     private LinearLayout paginationSection;
     private Button prevPageBtn, nextPageBtn;
@@ -60,9 +65,10 @@ public class ListProductActivity extends AppCompatActivity {
     private String currentSearchQuery = "";
     private String currentSortType = "none"; // none, name, price, rating
     private boolean isFilterVisible = false;
+    private boolean isListView = true; // true for list view, false for grid view
 
     // Pagination variables
-    private static final int ITEMS_PER_PAGE = 6;
+    private int itemsPerPage = 6;
     private int currentPage = 1;
     private int totalPages = 1;
 
@@ -74,6 +80,7 @@ public class ListProductActivity extends AppCompatActivity {
 
         initializeViews();
         setupListeners();
+        initializeDefaultStates();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         productController = new ProductController();
@@ -100,6 +107,14 @@ public class ListProductActivity extends AppCompatActivity {
         sortRatingAscBtn = findViewById(R.id.sortRatingAscBtn);
         sortRatingDescBtn = findViewById(R.id.sortRatingDescBtn);
         clearFiltersBtn = findViewById(R.id.clearFiltersBtn);
+
+        // Layout and View components
+        listViewBtn = findViewById(R.id.listViewBtn);
+        gridViewBtn = findViewById(R.id.gridViewBtn);
+        itemsPerPage6Btn = findViewById(R.id.itemsPerPage6Btn);
+        itemsPerPage12Btn = findViewById(R.id.itemsPerPage12Btn);
+        itemsPerPage24Btn = findViewById(R.id.itemsPerPage24Btn);
+        itemsPerPage48Btn = findViewById(R.id.itemsPerPage48Btn);
 
         // Pagination components
         paginationSection = findViewById(R.id.paginationSection);
@@ -170,6 +185,15 @@ public class ListProductActivity extends AppCompatActivity {
                 updateProductDisplay();
             }
         });
+
+        // Layout and View options
+        listViewBtn.setOnClickListener(v -> setLayoutView(true));
+        gridViewBtn.setOnClickListener(v -> setLayoutView(false));
+
+        itemsPerPage6Btn.setOnClickListener(v -> setItemsPerPage(6));
+        itemsPerPage12Btn.setOnClickListener(v -> setItemsPerPage(12));
+        itemsPerPage24Btn.setOnClickListener(v -> setItemsPerPage(24));
+        itemsPerPage48Btn.setOnClickListener(v -> setItemsPerPage(48));
     }
 
     private void toggleFilterSection() {
@@ -291,7 +315,7 @@ public class ListProductActivity extends AppCompatActivity {
         }
 
         // Update pagination
-        totalPages = Math.max(1, (int) Math.ceil((double) filteredProducts.size() / ITEMS_PER_PAGE));
+        totalPages = Math.max(1, (int) Math.ceil((double) filteredProducts.size() / itemsPerPage));
         currentPage = Math.min(currentPage, totalPages);
 
         updateProductDisplay();
@@ -319,8 +343,8 @@ public class ListProductActivity extends AppCompatActivity {
 
     private void updateProductDisplay() {
         // Calculate start and end indices for current page
-        int startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-        int endIndex = Math.min(startIndex + ITEMS_PER_PAGE, filteredProducts.size());
+        int startIndex = (currentPage - 1) * itemsPerPage;
+        int endIndex = Math.min(startIndex + itemsPerPage, filteredProducts.size());
 
         // Get products for current page
         List<Product> currentPageProducts = new ArrayList<>();
@@ -366,8 +390,8 @@ public class ListProductActivity extends AppCompatActivity {
 
     private void updateInfoTexts() {
         // Update product count
-        int startItem = filteredProducts.isEmpty() ? 0 : (currentPage - 1) * ITEMS_PER_PAGE + 1;
-        int endItem = Math.min(currentPage * ITEMS_PER_PAGE, filteredProducts.size());
+        int startItem = filteredProducts.isEmpty() ? 0 : (currentPage - 1) * itemsPerPage + 1;
+        int endItem = Math.min(currentPage * itemsPerPage, filteredProducts.size());
 
         if (filteredProducts.isEmpty()) {
             productCountTxt.setText("Showing 0 products");
@@ -378,5 +402,47 @@ public class ListProductActivity extends AppCompatActivity {
 
         // Update page info
         pageInfoTxt.setText(String.format("Page %d of %d", currentPage, totalPages));
+    }
+
+    private void setLayoutView(boolean isListView) {
+        this.isListView = isListView;
+        if (isListView) {
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            listViewBtn.setAlpha(1.0f);
+            gridViewBtn.setAlpha(0.5f);
+        } else {
+            recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+            listViewBtn.setAlpha(0.5f);
+            gridViewBtn.setAlpha(1.0f);
+        }
+    }
+
+    private void setItemsPerPage(int itemsPerPage) {
+        this.itemsPerPage = itemsPerPage;
+        totalPages = (int) Math.ceil((double) filteredProducts.size() / this.itemsPerPage);
+        currentPage = 1; // Reset to first page
+        applyFiltersAndPagination();
+    }
+
+    private void initializeDefaultStates() {
+        // Set default sorting to none
+        currentSortType = "none";
+
+        // Clear search query
+        currentSearchQuery = "";
+
+        // Hide filter section by default
+        isFilterVisible = false;
+        filterSection.setVisibility(View.GONE);
+        filterBtn.setAlpha(0.7f);
+
+        // Set default items per page
+        itemsPerPage = 6;
+        totalPages = (int) Math.ceil((double) filteredProducts.size() / itemsPerPage);
+        currentPage = 1;
+
+        // Set default layout to list view
+        isListView = true;
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 }
