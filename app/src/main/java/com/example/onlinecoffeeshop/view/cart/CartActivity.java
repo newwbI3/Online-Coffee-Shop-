@@ -97,7 +97,12 @@ public class CartActivity extends BaseActivity {
 
     private void setupEmptyStateButton() {
         Button btnStartShoppingCart = findViewById(R.id.btn_start_shopping_cart);
-        btnStartShoppingCart.setOnClickListener(v -> finish());
+        btnStartShoppingCart.setOnClickListener(v -> {
+            // Navigate to home page to start shopping
+            Intent intent = new Intent(CartActivity.this, com.example.onlinecoffeeshop.MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        });
     }
 
     private void loadCartFromFirebase() {
