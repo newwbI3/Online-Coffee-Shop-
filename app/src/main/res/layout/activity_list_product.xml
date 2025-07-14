@@ -20,9 +20,11 @@
             android:orientation="vertical"
             android:paddingBottom="80dp">
 
+            <!-- Header Section -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:paddingBottom="16dp">
 
                 <LinearLayout
                     android:id="@+id/back_btn"
@@ -58,7 +60,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="List"
+                    android:text="Products"
                     android:textSize="22sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -67,11 +69,342 @@
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <!-- Search Bar Section -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="16dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/search_background"
+                    android:layout_marginEnd="8dp">
+
+                    <ImageView
+                        android:id="@+id/searchIcon"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginStart="12dp"
+                        android:src="@drawable/ic_search"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent" />
+
+                    <EditText
+                        android:id="@+id/searchEditText"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="12dp"
+                        android:background="@android:color/transparent"
+                        android:hint="Search products..."
+                        android:textSize="14sp"
+                        android:textColorHint="@color/grey"
+                        android:inputType="text"
+                        android:imeOptions="actionSearch"
+                        app:layout_constraintStart_toEndOf="@+id/searchIcon"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <ImageView
+                    android:id="@+id/filterBtn"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_filter"
+                    android:background="@drawable/white_full_corner_bg"
+                    android:padding="12dp"
+                    android:clickable="true"
+                    android:focusable="true" />
+
+            </LinearLayout>
+
+            <!-- Filter Section (Initially Hidden) -->
+            <LinearLayout
+                android:id="@+id/filterSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="16dp"
+                android:orientation="vertical"
+                android:background="@drawable/white_full_corner_bg"
+                android:padding="16dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sort by:"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="8dp" />
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <!-- Name Sort Options -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginEnd="12dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Name"
+                                android:textSize="12sp"
+                                android:textStyle="bold"
+                                android:layout_gravity="center"
+                                android:layout_marginBottom="4dp" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <Button
+                                    android:id="@+id/sortNameAscBtn"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="32dp"
+                                    android:layout_marginEnd="4dp"
+                                    android:text="A-Z"
+                                    android:textSize="10sp"
+                                    android:minWidth="0dp"
+                                    android:paddingHorizontal="12dp"
+                                    android:background="@drawable/filter_button_selector"
+                                    android:textColor="@color/filter_button_text_selector"
+                                    style="@style/Widget.AppCompat.Button.Borderless" />
+
+                                <Button
+                                    android:id="@+id/sortNameDescBtn"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="32dp"
+                                    android:text="Z-A"
+                                    android:textSize="10sp"
+                                    android:minWidth="0dp"
+                                    android:paddingHorizontal="12dp"
+                                    android:background="@drawable/filter_button_selector"
+                                    android:textColor="@color/filter_button_text_selector"
+                                    style="@style/Widget.AppCompat.Button.Borderless" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Price Sort Options -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginEnd="12dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Price"
+                                android:textSize="12sp"
+                                android:textStyle="bold"
+                                android:layout_gravity="center"
+                                android:layout_marginBottom="4dp" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <Button
+                                    android:id="@+id/sortPriceAscBtn"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="32dp"
+                                    android:layout_marginEnd="4dp"
+                                    android:text="Low"
+                                    android:textSize="10sp"
+                                    android:minWidth="0dp"
+                                    android:paddingHorizontal="12dp"
+                                    android:background="@drawable/filter_button_selector"
+                                    android:textColor="@color/filter_button_text_selector"
+                                    style="@style/Widget.AppCompat.Button.Borderless" />
+
+                                <Button
+                                    android:id="@+id/sortPriceDescBtn"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="32dp"
+                                    android:text="High"
+                                    android:textSize="10sp"
+                                    android:minWidth="0dp"
+                                    android:paddingHorizontal="12dp"
+                                    android:background="@drawable/filter_button_selector"
+                                    android:textColor="@color/filter_button_text_selector"
+                                    style="@style/Widget.AppCompat.Button.Borderless" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Rating Sort Options -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginEnd="12dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Rating"
+                                android:textSize="12sp"
+                                android:textStyle="bold"
+                                android:layout_gravity="center"
+                                android:layout_marginBottom="4dp" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <Button
+                                    android:id="@+id/sortRatingAscBtn"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="32dp"
+                                    android:layout_marginEnd="4dp"
+                                    android:text="Low"
+                                    android:textSize="10sp"
+                                    android:minWidth="0dp"
+                                    android:paddingHorizontal="12dp"
+                                    android:background="@drawable/filter_button_selector"
+                                    android:textColor="@color/filter_button_text_selector"
+                                    style="@style/Widget.AppCompat.Button.Borderless" />
+
+                                <Button
+                                    android:id="@+id/sortRatingDescBtn"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="32dp"
+                                    android:text="High"
+                                    android:textSize="10sp"
+                                    android:minWidth="0dp"
+                                    android:paddingHorizontal="12dp"
+                                    android:background="@drawable/filter_button_selector"
+                                    android:textColor="@color/filter_button_text_selector"
+                                    style="@style/Widget.AppCompat.Button.Borderless" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Clear Button -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <Button
+                                android:id="@+id/clearFiltersBtn"
+                                style="@style/Widget.MaterialComponents.Button"
+                                android:layout_width="wrap_content"
+                                android:layout_height="36dp"
+                                android:text="Clear All"
+                                android:textSize="11sp"
+                                android:minWidth="0dp"
+                                android:paddingHorizontal="16dp"
+                                android:backgroundTint="@color/orange"
+                                android:layout_marginTop="18dp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </HorizontalScrollView>
+
+            </LinearLayout>
+
+            <!-- Product Count and Results Info -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="16dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/productCountTxt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Showing 0 products"
+                    android:textSize="14sp"
+                    android:textColor="@color/grey" />
+
+                <TextView
+                    android:id="@+id/pageInfoTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Page 1 of 1"
+                    android:textSize="14sp"
+                    android:textColor="@color/grey" />
+
+            </LinearLayout>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/cartView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
                 android:layout_marginBottom="20dp"/>
+
+            <!-- Pagination Section -->
+            <LinearLayout
+                android:id="@+id/paginationSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="16dp"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:visibility="gone">
+
+                <Button
+                    android:id="@+id/prevPageBtn"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="Previous"
+                    android:enabled="false" />
+
+                <TextView
+                    android:id="@+id/currentPageTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:text="1"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:minWidth="40dp" />
+
+                <Button
+                    android:id="@+id/nextPageBtn"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Next"
+                    android:enabled="false" />
+
+            </LinearLayout>
 
             <!-- Empty State for Search Results -->
             <LinearLayout
