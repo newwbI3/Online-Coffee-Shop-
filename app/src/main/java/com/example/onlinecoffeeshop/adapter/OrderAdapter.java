@@ -16,17 +16,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.onlinecoffeeshop.R;
-import com.example.onlinecoffeeshop.controller.FeedbackController;
 import com.example.onlinecoffeeshop.controller.OrderController;
-import com.example.onlinecoffeeshop.helper.SessionManager;
 import com.example.onlinecoffeeshop.model.CartItem;
 import com.example.onlinecoffeeshop.model.Order;
+import com.example.onlinecoffeeshop.view.order.FeedbackActivity;
 import com.example.onlinecoffeeshop.view.order.OrderDetailActivity;
-import com.google.gson.Gson;
 
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -40,6 +36,19 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         this.context = context;
         this.orderList = orderList;
         this.orderController = new OrderController();
+    }
+
+    // Add method to update order list
+    public void updateOrderList(List<Order> newOrders) {
+        this.orderList.clear();
+        this.orderList.addAll(newOrders);
+        notifyDataSetChanged();
+    }
+
+    // Add method to add single order
+    public void addOrder(Order order) {
+        this.orderList.add(0, order); // Add to beginning of list
+        notifyItemInserted(0);
     }
 
     @NonNull
@@ -79,9 +88,11 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         if ("Đang xử lý".equals(status) || "Đang giao".equals(status)) {
             holder.btnConfirmReceived.setVisibility(View.VISIBLE);
             holder.btnConfirmReceived.setOnClickListener(v -> {
+                // Update order status both locally and in database
                 order.setShipmentStatus("delivered");
                 orderController.updateOrderStatus(order.getOrderId(), "delivered");
                 Toast.makeText(context, "Cảm ơn bạn đã xác nhận!", Toast.LENGTH_SHORT).show();
+                // Refresh this specific item
                 notifyItemChanged(position);
             });
         } else {
@@ -91,17 +102,25 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         // View details button
         holder.btnViewDetails.setOnClickListener(v -> {
             Intent intent = new Intent(context, OrderDetailActivity.class);
-            intent.putExtra("order_json", new Gson().toJson(order)); // Serialize order
+            intent.putExtra("orderId", order.getOrderId());
+            intent.putExtra("orderTotal", order.getTotal());
+            intent.putExtra("orderStatus", order.getShipmentStatus());
+            intent.putExtra("deliveryMethod", order.getDeliveryMethod());
             context.startActivity(intent);
         });
 
-        // Handle feedback button
-        holder.btnFeedback.setVisibility("Đã giao".equals(mapStatus(order.getShipmentStatus())) ? View.VISIBLE : View.GONE);
-        holder.btnFeedback.setOnClickListener(v -> {
-            Intent intent = new Intent(context, FeedbackActivity.class);
-            intent.putExtra("orderId", order.getOrderId());
-            context.startActivity(intent);
-        });
+        // Handle feedback button - show only for delivered orders
+        String currentStatus = mapStatus(order.getShipmentStatus());
+        if ("Đã giao".equals(currentStatus)) {
+            holder.btnFeedback.setVisibility(View.VISIBLE);
+            holder.btnFeedback.setOnClickListener(v -> {
+                Intent intent = new Intent(context, FeedbackActivity.class);
+                intent.putExtra("orderId", order.getOrderId());
+                context.startActivity(intent);
+            });
+        } else {
+            holder.btnFeedback.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -112,7 +131,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     public static class OrderViewHolder extends RecyclerView.ViewHolder {
         TextView tvOrderTotal, tvOrderStatus;
         LinearLayout itemsContainer;
-        Button btnConfirmReceived, btnViewDetails;
+        Button btnConfirmReceived, btnViewDetails, btnFeedback;
 
         public OrderViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -121,6 +140,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             itemsContainer = itemView.findViewById(R.id.items_container);
             btnConfirmReceived = itemView.findViewById(R.id.btn_confirm_received);
             btnViewDetails = itemView.findViewById(R.id.btn_view_details);
+            btnFeedback = itemView.findViewById(R.id.btn_feedback);
         }
     }
 

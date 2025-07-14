@@ -95,29 +95,34 @@ public class OrderHistoryActivity extends BaseActivity {
         orderController.getOrdersByUserId(userId, new OrderController.OnOrdersLoadedListener() {
             @Override
             public void onSuccess(List<Order> orders) {
-                orderList.clear();
+                // Use the new updateOrderList method from OrderAdapter
                 if (orders != null) {
-                    orderList.addAll(orders);
+                    orderAdapter.updateOrderList(orders);
+                } else {
+                    orderAdapter.updateOrderList(new ArrayList<>());
                 }
 
-                if (orderList.isEmpty()) {
+                // Update UI visibility based on order count
+                if (orderAdapter.getItemCount() == 0) {
                     orderRecyclerView.setVisibility(View.GONE);
                     emptyStateLayout.setVisibility(View.VISIBLE);
                 } else {
                     orderRecyclerView.setVisibility(View.VISIBLE);
                     emptyStateLayout.setVisibility(View.GONE);
-                    orderAdapter.notifyDataSetChanged();
                 }
             }
 
             @Override
             public void onFailure(String message) {
                 Toast.makeText(OrderHistoryActivity.this, "Lỗi khi tải đơn hàng: " + message, Toast.LENGTH_SHORT).show();
+                // Show empty state on failure
+                orderRecyclerView.setVisibility(View.GONE);
+                emptyStateLayout.setVisibility(View.VISIBLE);
             }
         });
     }
 
-    // Thêm method để refresh khi cần
+    // Method to refresh orders when returning from other activities
     public void refreshOrders() {
         fetchOrders();
     }
