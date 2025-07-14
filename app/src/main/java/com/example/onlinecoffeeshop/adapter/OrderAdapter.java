@@ -16,7 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.onlinecoffeeshop.R;
+import com.example.onlinecoffeeshop.controller.FeedbackController;
 import com.example.onlinecoffeeshop.controller.OrderController;
+import com.example.onlinecoffeeshop.helper.SessionManager;
 import com.example.onlinecoffeeshop.model.CartItem;
 import com.example.onlinecoffeeshop.model.Order;
 import com.example.onlinecoffeeshop.view.order.OrderDetailActivity;
@@ -90,6 +92,14 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         holder.btnViewDetails.setOnClickListener(v -> {
             Intent intent = new Intent(context, OrderDetailActivity.class);
             intent.putExtra("order_json", new Gson().toJson(order)); // Serialize order
+            context.startActivity(intent);
+        });
+
+        // Handle feedback button
+        holder.btnFeedback.setVisibility("Đã giao".equals(mapStatus(order.getShipmentStatus())) ? View.VISIBLE : View.GONE);
+        holder.btnFeedback.setOnClickListener(v -> {
+            Intent intent = new Intent(context, FeedbackActivity.class);
+            intent.putExtra("orderId", order.getOrderId());
             context.startActivity(intent);
         });
     }

@@ -24,6 +24,13 @@ public class OrderController {
             listener.onFailure("Order hoặc orderId không hợp lệ");
             return;
         }
+
+        // Đảm bảo Order có đầy đủ thông tin
+        if (order.getUserId() == null || order.getItems() == null || order.getItems().isEmpty()) {
+            listener.onFailure("Thông tin đơn hàng không đầy đủ");
+            return;
+        }
+
         orderRef.child(order.getOrderId()).setValue(order)
                 .addOnSuccessListener(unused -> listener.onSuccess())
                 .addOnFailureListener(e -> listener.onFailure(e.getMessage()));

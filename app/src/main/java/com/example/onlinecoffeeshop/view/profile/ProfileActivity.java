@@ -56,7 +56,7 @@ public class ProfileActivity extends BaseActivity {
     private Button btnUpdateProfile, btnChangePassword, btnLogout;
     private ProgressBar progressBar;
     private BottomNavigationView bottomNavigation;
-    private LinearLayout backBtn;
+    // backBtn removed from layout
     
     private AuthController authController;
     private User currentUser;
@@ -74,9 +74,6 @@ public class ProfileActivity extends BaseActivity {
         initController();
         setupClickListeners();
         setupBottomNavigation();
-
-        // Test Firestore data first
-        testFirestoreData();
 
         // Then load user data
         loadUserDataFromFirestore();
@@ -108,7 +105,7 @@ public class ProfileActivity extends BaseActivity {
         progressBar = findViewById(R.id.progress_bar);
 
         // Header components
-        backBtn = findViewById(R.id.back_btn);
+        // backBtn removed from layout - no findViewById needed
 
         // Bottom navigation
         bottomNavigation = findViewById(R.id.bottom_navigation);
@@ -136,15 +133,7 @@ public class ProfileActivity extends BaseActivity {
         // Logout button click listener
         btnLogout.setOnClickListener(v -> showLogoutDialog());
 
-        // Header back button
-        backBtn.setOnClickListener(v -> finish());
-
-        // Add refresh function for testing - long press on back button
-        backBtn.setOnLongClickListener(v -> {
-            Toast.makeText(this, "Refreshing data...", Toast.LENGTH_SHORT).show();
-            loadUserDataFromFirestore();
-            return true;
-        });
+        // Header back button removed from layout - no listeners needed
     }
 
     private void setupBottomNavigation() {
@@ -739,35 +728,4 @@ public class ProfileActivity extends BaseActivity {
         }
     }
 
-    // Method to test and debug Firestore data
-    private void testFirestoreData() {
-        if (mAuth.getCurrentUser() == null) return;
-
-        String userId = mAuth.getCurrentUser().getUid();
-        Log.d(TAG, "=== TESTING FIRESTORE DATA ===");
-        Log.d(TAG, "User ID: " + userId);
-
-        db.collection("users")
-                .document(userId)
-                .get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    Log.d(TAG, "Document exists: " + documentSnapshot.exists());
-                    if (documentSnapshot.exists()) {
-                        Log.d(TAG, "All document data: " + documentSnapshot.getData());
-
-                        // Test each field individually
-                        Log.d(TAG, "fullname: '" + documentSnapshot.getString("fullname") + "'");
-                        Log.d(TAG, "dob: '" + documentSnapshot.getString("dob") + "'");
-                        Log.d(TAG, "address: '" + documentSnapshot.getString("address") + "'");
-                        Log.d(TAG, "phone: '" + documentSnapshot.getString("phone") + "'");
-                        Log.d(TAG, "email: '" + documentSnapshot.getString("email") + "'");
-                        Log.d(TAG, "role: '" + documentSnapshot.getString("role") + "'");
-                        Log.d(TAG, "avatar: '" + documentSnapshot.getString("avatar") + "'");
-                    }
-                    Log.d(TAG, "=== END TEST ===");
-                })
-                .addOnFailureListener(e -> {
-                    Log.e(TAG, "Error testing Firestore data", e);
-                });
-    }
 }

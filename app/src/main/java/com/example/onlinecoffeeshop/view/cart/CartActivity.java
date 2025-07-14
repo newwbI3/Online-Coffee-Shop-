@@ -81,7 +81,7 @@ public class CartActivity extends BaseActivity {
         loadCartFromFirebase();
         setupEmptyStateButton();
 
-        findViewById(R.id.back_btn).setOnClickListener(v -> finish());
+        // back_btn removed from layout - no listener needed
     }
 
     private void initViews() {

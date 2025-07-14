@@ -211,7 +211,7 @@
                             android:layout_gravity="center_vertical"
                             android:layout_weight="1"
                             android:text="0"
-                            android:textAlignment="textEnd"
+                            android:gravity="end"
                             android:textColor="@color/darkBrown"
                             android:textStyle="bold" />
 
@@ -243,6 +243,39 @@
                         android:layout_marginHorizontal="16dp"
                         android:text="TextView"
                         android:textColor="@color/darkBrown" />
+
+                    <!-- Feedback Section -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="Đánh giá sản phẩm"
+                        android:textColor="@color/darkBrown"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_no_feedback"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="Chưa có đánh giá nào cho sản phẩm này"
+                        android:textColor="@color/grey"
+                        android:textSize="14sp"
+                        android:textStyle="italic"
+                        android:gravity="center"
+                        android:padding="16dp"
+                        android:visibility="gone" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/feedbackRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:nestedScrollingEnabled="false" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/addToCart_btn"
