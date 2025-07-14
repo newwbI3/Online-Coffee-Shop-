@@ -21,7 +21,8 @@ import com.example.onlinecoffeeshop.controller.OrderController;
 import com.example.onlinecoffeeshop.helper.SessionManager;
 import com.example.onlinecoffeeshop.model.CartItem;
 import com.example.onlinecoffeeshop.model.Order;
-import com.example.onlinecoffeeshop.view.order.FeedbackActivity;
+import com.example.onlinecoffeeshop.view.order.OrderDetailActivity;
+import com.google.gson.Gson;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -73,8 +74,9 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             holder.itemsContainer.addView(itemView);
         }
 
-        // Show/hide confirm button based on status
-        if ("Đang xử lý".equals(mapStatus(order.getShipmentStatus())) || "Đang giao".equals(mapStatus(order.getShipmentStatus()))) {
+        // Show confirm button if order is in progress
+        String status = mapStatus(order.getShipmentStatus());
+        if ("Đang xử lý".equals(status) || "Đang giao".equals(status)) {
             holder.btnConfirmReceived.setVisibility(View.VISIBLE);
             holder.btnConfirmReceived.setOnClickListener(v -> {
                 order.setShipmentStatus("delivered");
@@ -86,10 +88,11 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             holder.btnConfirmReceived.setVisibility(View.GONE);
         }
 
-        // Handle view details
+        // View details button
         holder.btnViewDetails.setOnClickListener(v -> {
-            Toast.makeText(context, "Xem chi tiết đơn: " + order.getOrderId(), Toast.LENGTH_SHORT).show();
-            // TODO: Launch OrderDetailActivity if needed
+            Intent intent = new Intent(context, OrderDetailActivity.class);
+            intent.putExtra("order_json", new Gson().toJson(order)); // Serialize order
+            context.startActivity(intent);
         });
 
         // Handle feedback button
@@ -107,26 +110,18 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     }
 
     public static class OrderViewHolder extends RecyclerView.ViewHolder {
-        TextView tvOrderId, tvOrderTotal, tvOrderDate, tvOrderStatus;
+        TextView tvOrderTotal, tvOrderStatus;
         LinearLayout itemsContainer;
-        Button btnConfirmReceived, btnViewDetails, btnFeedback; // 👈 Add this
+        Button btnConfirmReceived, btnViewDetails;
 
         public OrderViewHolder(@NonNull View itemView) {
             super(itemView);
-
             tvOrderTotal = itemView.findViewById(R.id.tv_order_total);
-
             tvOrderStatus = itemView.findViewById(R.id.tv_order_status);
             itemsContainer = itemView.findViewById(R.id.items_container);
             btnConfirmReceived = itemView.findViewById(R.id.btn_confirm_received);
-            btnViewDetails = itemView.findViewById(R.id.btn_view_details); // 👈 Init
-            btnFeedback = itemView.findViewById(R.id.btn_feedback); // 👈 Init
+            btnViewDetails = itemView.findViewById(R.id.btn_view_details);
         }
-    }
-
-    private String formatDate(long timestamp) {
-        return new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
-                .format(new Date(timestamp));
     }
 
     private String formatCurrency(double value) {
@@ -137,11 +132,16 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     private String mapStatus(String status) {
         if (status == null) return "Đang xử lý";
         switch (status.toLowerCase()) {
-            case "processing": return "Đang xử lý";
-            case "shipping": return "Đang giao";
-            case "delivered": return "Đã giao";
-            case "cancelled": return "Đã hủy";
-            default: return status;
+            case "processing":
+                return "Đang xử lý";
+            case "shipping":
+                return "Đang giao";
+            case "delivered":
+                return "Đã giao";
+            case "cancelled":
+                return "Đã hủy";
+            default:
+                return status;
         }
     }
 }
