@@ -53,9 +53,6 @@ public class FavoriteActivity extends BaseActivity {
 
         emptyStateFavorite = findViewById(R.id.emptyStateFavorite);
 
-        ImageView backBtnFav = findViewById(R.id.backBtnFav);
-        backBtnFav.setOnClickListener(v -> finish());
-
         Button btnBrowseProducts = findViewById(R.id.btn_browse_products);
         btnBrowseProducts.setOnClickListener(v -> {
             Intent intent = new Intent(this, MainActivity.class);

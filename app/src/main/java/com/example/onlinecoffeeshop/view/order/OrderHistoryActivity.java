@@ -27,7 +27,7 @@ public class OrderHistoryActivity extends BaseActivity {
     private RecyclerView orderRecyclerView;
     private LinearLayout emptyStateLayout;
     private Button btnStartShopping;
-    private ImageView backBtnOrder;
+    // backBtnOrder removed from layout
 
     private List<Order> orderList;
     private com.example.onlinecoffeeshop.adapter.OrderAdapter orderAdapter;
@@ -65,7 +65,7 @@ public class OrderHistoryActivity extends BaseActivity {
         orderRecyclerView = findViewById(R.id.orderRecyclerView);
         emptyStateLayout = findViewById(R.id.emptyStateLayout);
         btnStartShopping = findViewById(R.id.btn_start_shopping);
-        backBtnOrder = findViewById(R.id.backBtnOrder);
+        // backBtnOrder removed from layout - no findViewById needed
 
         orderList = new ArrayList<>();
         orderAdapter = new com.example.onlinecoffeeshop.adapter.OrderAdapter(this, orderList);
@@ -76,7 +76,7 @@ public class OrderHistoryActivity extends BaseActivity {
     }
 
     private void setupListeners() {
-        backBtnOrder.setOnClickListener(v -> finish());
+        // backBtnOrder removed from layout - no listener needed
 
         btnStartShopping.setOnClickListener(v -> {
             Intent intent = new Intent(OrderHistoryActivity.this, MainActivity.class);
