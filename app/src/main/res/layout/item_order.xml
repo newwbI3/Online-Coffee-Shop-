@@ -86,6 +86,16 @@
                 android:textColor="@android:color/white" />
 
             <Button
+                android:id="@+id/btn_feedback"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Đánh giá"
+                android:layout_marginEnd="8dp"
+                android:backgroundTint="@color/orange"
+                android:textColor="@android:color/white"
+                android:visibility="gone" />
+
+            <Button
                 android:id="@+id/btn_confirm_received"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

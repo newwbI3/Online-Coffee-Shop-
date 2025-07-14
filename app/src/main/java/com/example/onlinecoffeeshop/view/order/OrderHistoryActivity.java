@@ -49,6 +49,18 @@ public class OrderHistoryActivity extends BaseActivity {
         fetchOrders();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Kiểm tra đăng nhập và refresh orders khi quay lại activity
+        if (mAuth.getCurrentUser() == null) {
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+        } else {
+            fetchOrders();
+        }
+    }
+
     private void initViews() {
         orderRecyclerView = findViewById(R.id.orderRecyclerView);
         emptyStateLayout = findViewById(R.id.emptyStateLayout);
@@ -75,12 +87,18 @@ public class OrderHistoryActivity extends BaseActivity {
     }
 
     private void fetchOrders() {
+        if (mAuth.getCurrentUser() == null) {
+            return;
+        }
+
         String userId = mAuth.getCurrentUser().getUid();
         orderController.getOrdersByUserId(userId, new OrderController.OnOrdersLoadedListener() {
             @Override
             public void onSuccess(List<Order> orders) {
                 orderList.clear();
-                orderList.addAll(orders);
+                if (orders != null) {
+                    orderList.addAll(orders);
+                }
 
                 if (orderList.isEmpty()) {
                     orderRecyclerView.setVisibility(View.GONE);
@@ -94,17 +112,13 @@ public class OrderHistoryActivity extends BaseActivity {
 
             @Override
             public void onFailure(String message) {
-                Toast.makeText(OrderHistoryActivity.this, "Lỗi: " + message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(OrderHistoryActivity.this, "Lỗi khi tải đơn hàng: " + message, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (mAuth.getCurrentUser() == null) {
-            startActivity(new Intent(this, LoginActivity.class));
-            finish();
-        }
+    // Thêm method để refresh khi cần
+    public void refreshOrders() {
+        fetchOrders();
     }
 }
