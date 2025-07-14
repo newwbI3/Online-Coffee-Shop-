@@ -24,6 +24,13 @@ public class OrderController {
             listener.onFailure("Order hoặc orderId không hợp lệ");
             return;
         }
+
+        // Đảm bảo Order có đầy đủ thông tin
+        if (order.getUserId() == null || order.getItems() == null || order.getItems().isEmpty()) {
+            listener.onFailure("Thông tin đơn hàng không đầy đủ");
+            return;
+        }
+
         orderRef.child(order.getOrderId()).setValue(order)
                 .addOnSuccessListener(unused -> listener.onSuccess())
                 .addOnFailureListener(e -> listener.onFailure(e.getMessage()));
@@ -59,6 +66,8 @@ public class OrderController {
                                 orderList.add(order);
                             }
                         }
+                        orderList.sort((o1, o2) -> Long.compare(o2.getTimestamp(), o1.getTimestamp()));
+
                         listener.onSuccess(orderList);
                     }
 
@@ -68,6 +77,7 @@ public class OrderController {
                     }
                 });
     }
+
     public void cancelOrder(String orderId, OnOrderCancelledListener listener) {
         orderRef.child(orderId).removeValue()
                 .addOnSuccessListener(unused -> listener.onSuccess())
@@ -92,5 +102,7 @@ public class OrderController {
         void onSuccess();
         void onFailure(String message);
     }
-
+    public void updateOrderStatus(String orderId, String newStatus) {
+        orderRef.child(orderId).child("shipmentStatus").setValue(newStatus);
+    }
 }

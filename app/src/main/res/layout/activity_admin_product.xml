@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/coffeeAccent"
+    android:padding="12dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:text="☕ Quản lý Sản phẩm"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/coffeePrimary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="8dp" />
+
+    <ImageButton
+        android:id="@+id/btnAddProduct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_input_add"
+        android:contentDescription="Thêm sản phẩm"
+        android:layout_gravity="end"
+        android:backgroundTint="@color/coffeePrimary"
+        android:padding="8dp"
+        android:layout_marginBottom="4dp"
+        android:background="?attr/selectableItemBackgroundBorderless" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerProducts"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>

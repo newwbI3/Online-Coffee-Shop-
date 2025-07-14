@@ -1,0 +1,23 @@
+<resources>
+
+    <!-- Common text style -->
+    <style name="OrderLabel">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:layout_marginTop">4dp</item>
+    </style>
+
+    <!-- Common button style -->
+    <style name="PrimaryButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:backgroundTint">@color/darkBrown</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+    </style>
+
+</resources>
