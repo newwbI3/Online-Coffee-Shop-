@@ -9,15 +9,19 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
-
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.onlinecoffeeshop.R;
+import com.example.onlinecoffeeshop.adapter.FeedbackAdapter;
 import com.example.onlinecoffeeshop.controller.CartController;
 import com.example.onlinecoffeeshop.controller.FavouriteController;
+import com.example.onlinecoffeeshop.controller.FeedbackController;
 import com.example.onlinecoffeeshop.controller.PopularController;
 import com.example.onlinecoffeeshop.controller.ProductController;
 import com.example.onlinecoffeeshop.model.CartItem;
+import com.example.onlinecoffeeshop.model.Feedback;
 import com.example.onlinecoffeeshop.model.FavouriteItem;
 import com.example.onlinecoffeeshop.model.Product;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,6 +30,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,6 +48,11 @@ public class DetailProductActivity extends AppCompatActivity {
     private CartController cartController;
     private ImageView favBtn;
     private FavouriteController favouriteController;
+    private RecyclerView feedbackRecyclerView;
+    private FeedbackAdapter feedbackAdapter;
+    private List<Feedback> feedbackList;
+    private FeedbackController feedbackController;
+    private TextView tvNoFeedback;
 
 
     @Override
@@ -55,6 +65,7 @@ public class DetailProductActivity extends AppCompatActivity {
 
         popularController = new PopularController();
         productController = new ProductController();
+        feedbackController = new FeedbackController();
 
         userId = (FirebaseAuth.getInstance().getCurrentUser() != null)
                 ? FirebaseAuth.getInstance().getCurrentUser().getUid()
@@ -65,6 +76,7 @@ public class DetailProductActivity extends AppCompatActivity {
         if (productId != null) {
             loadPopularDetail(productId);
             loadProductDetail(productId);
+            loadFeedbacks(productId);
         } else {
             Toast.makeText(this, "Không tìm thấy mã sản phẩm", Toast.LENGTH_SHORT).show();
         }
@@ -186,6 +198,12 @@ public class DetailProductActivity extends AppCompatActivity {
         smallTxt = findViewById(R.id.smallTxt);
         mediumTxt = findViewById(R.id.mediumTxt);
         largeTxt = findViewById(R.id.largeTxt);
+        feedbackRecyclerView = findViewById(R.id.feedbackRecyclerView);
+        tvNoFeedback = findViewById(R.id.tv_no_feedback);
+        feedbackRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        feedbackList = new ArrayList<>();
+        feedbackAdapter = new FeedbackAdapter(this, feedbackList);
+        feedbackRecyclerView.setAdapter(feedbackAdapter);
     }
 
     private void loadProductDetail(String productId) {
@@ -240,6 +258,37 @@ public class DetailProductActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(DetailProductActivity.this, "Lỗi khi tải sản phẩm", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void loadFeedbacks(String productId) {
+        feedbackController.getFeedbacksByProductId(productId, new FeedbackController.OnFeedbackLoadedListener() {
+            @Override
+            public void onSuccess(List<Feedback> feedbacks) {
+                feedbackList.clear();
+                if (feedbacks != null) {
+                    feedbackList.addAll(feedbacks);
+                }
+
+                // Hiển thị/ẩn thông báo "Chưa có đánh giá nào" dựa trên có feedback hay không
+                if (feedbackList.isEmpty()) {
+                    tvNoFeedback.setVisibility(android.view.View.VISIBLE);
+                    feedbackRecyclerView.setVisibility(android.view.View.GONE);
+                } else {
+                    tvNoFeedback.setVisibility(android.view.View.GONE);
+                    feedbackRecyclerView.setVisibility(android.view.View.VISIBLE);
+                }
+
+                feedbackAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(String error) {
+                // Khi có lỗi, hiển thị thông báo "Chưa có đánh giá nào"
+                tvNoFeedback.setVisibility(android.view.View.VISIBLE);
+                feedbackRecyclerView.setVisibility(android.view.View.GONE);
+                Toast.makeText(DetailProductActivity.this, "Lỗi khi tải phản hồi: " + error, Toast.LENGTH_SHORT).show();
             }
         });
     }

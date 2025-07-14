@@ -61,6 +61,12 @@
         <activity
             android:name=".view.order.OrderHistoryActivity"
             android:exported="false" />
+        <activity
+            android:name=".view.order.FeedbackActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.order.ProductFeedbackActivity"
+            android:exported="false" />
         <activity android:name=".view.admin.AdminProductActivity"
             android:exported="false" />
 

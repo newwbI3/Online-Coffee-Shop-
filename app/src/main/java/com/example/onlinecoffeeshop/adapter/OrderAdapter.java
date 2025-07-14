@@ -1,6 +1,7 @@
 package com.example.onlinecoffeeshop.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +16,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.onlinecoffeeshop.R;
+import com.example.onlinecoffeeshop.controller.FeedbackController;
 import com.example.onlinecoffeeshop.controller.OrderController;
+import com.example.onlinecoffeeshop.helper.SessionManager;
 import com.example.onlinecoffeeshop.model.CartItem;
 import com.example.onlinecoffeeshop.model.Order;
+import com.example.onlinecoffeeshop.view.order.FeedbackActivity;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -87,6 +91,14 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             Toast.makeText(context, "Xem chi tiết đơn: " + order.getOrderId(), Toast.LENGTH_SHORT).show();
             // TODO: Launch OrderDetailActivity if needed
         });
+
+        // Handle feedback button
+        holder.btnFeedback.setVisibility("Đã giao".equals(mapStatus(order.getShipmentStatus())) ? View.VISIBLE : View.GONE);
+        holder.btnFeedback.setOnClickListener(v -> {
+            Intent intent = new Intent(context, FeedbackActivity.class);
+            intent.putExtra("orderId", order.getOrderId());
+            context.startActivity(intent);
+        });
     }
 
     @Override
@@ -97,7 +109,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     public static class OrderViewHolder extends RecyclerView.ViewHolder {
         TextView tvOrderId, tvOrderTotal, tvOrderDate, tvOrderStatus;
         LinearLayout itemsContainer;
-        Button btnConfirmReceived, btnViewDetails; // 👈 Add this
+        Button btnConfirmReceived, btnViewDetails, btnFeedback; // 👈 Add this
 
         public OrderViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -108,6 +120,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             itemsContainer = itemView.findViewById(R.id.items_container);
             btnConfirmReceived = itemView.findViewById(R.id.btn_confirm_received);
             btnViewDetails = itemView.findViewById(R.id.btn_view_details); // 👈 Init
+            btnFeedback = itemView.findViewById(R.id.btn_feedback); // 👈 Init
         }
     }
 
