@@ -113,18 +113,78 @@ public class CheckoutActivity extends AppCompatActivity {
 
 
     private boolean validateInputs() {
-        if (TextUtils.isEmpty(fullNameEdt.getText()) ||
-                TextUtils.isEmpty(phoneEdt.getText()) ||
-                TextUtils.isEmpty(addressEdt.getText())) {
-            Toast.makeText(this, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+        String fullName = fullNameEdt.getText().toString().trim();
+        String phone = phoneEdt.getText().toString().trim();
+        String email = emailEdt.getText().toString().trim();
+        String address = addressEdt.getText().toString().trim();
+
+        // Validate full name
+        if (TextUtils.isEmpty(fullName)) {
+            fullNameEdt.setError("Vui lòng nhập họ tên");
+            fullNameEdt.requestFocus();
             return false;
         }
 
-        if (deliveryMethodGroup.getCheckedRadioButtonId() == -1 ||
-                paymentMethodGroup.getCheckedRadioButtonId() == -1) {
-            Toast.makeText(this, "Vui lòng chọn phương thức giao hàng và thanh toán", Toast.LENGTH_SHORT).show();
+        if (fullName.length() < 2) {
+            fullNameEdt.setError("Họ tên phải có ít nhất 2 ký tự");
+            fullNameEdt.requestFocus();
             return false;
         }
+
+        // Validate phone number using the provided regex
+        if (TextUtils.isEmpty(phone)) {
+            phoneEdt.setError("Vui lòng nhập số điện thoại");
+            phoneEdt.requestFocus();
+            return false;
+        }
+
+        String phoneRegex = "(84|0[35789])([0-9]{8})";
+        if (!phone.matches(phoneRegex)) {
+            phoneEdt.setError("Số điện thoại không đúng định dạng. VD: 0901234567 hoặc 84901234567");
+            phoneEdt.requestFocus();
+            return false;
+        }
+
+        // Validate email if provided
+        if (!TextUtils.isEmpty(email)) {
+            String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+            if (!email.matches(emailPattern)) {
+                emailEdt.setError("Email không đúng định dạng");
+                emailEdt.requestFocus();
+                return false;
+            }
+        }
+
+        // Validate address
+        if (TextUtils.isEmpty(address)) {
+            addressEdt.setError("Vui lòng nhập địa chỉ");
+            addressEdt.requestFocus();
+            return false;
+        }
+
+        if (address.length() < 10) {
+            addressEdt.setError("Địa chỉ phải có ít nhất 10 ký tự");
+            addressEdt.requestFocus();
+            return false;
+        }
+
+        // Validate delivery method selection
+        if (deliveryMethodGroup.getCheckedRadioButtonId() == -1) {
+            Toast.makeText(this, "Vui lòng chọn phương thức giao hàng", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        // Validate payment method selection
+        if (paymentMethodGroup.getCheckedRadioButtonId() == -1) {
+            Toast.makeText(this, "Vui lòng chọn phương thức thanh toán", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        // Clear all errors if validation passes
+        fullNameEdt.setError(null);
+        phoneEdt.setError(null);
+        emailEdt.setError(null);
+        addressEdt.setError(null);
 
         return true;
     }
