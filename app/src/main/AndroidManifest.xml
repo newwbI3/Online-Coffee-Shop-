@@ -63,7 +63,7 @@
             android:exported="false" />
         <activity android:name=".view.admin.AdminProductActivity"
             android:exported="false" />
-
+        <activity android:name=".view.order.OrderDetailActivity" android:theme="@style/Theme.OnlineCoffeeShop.NoActionBar" />
     </application>
 
 </manifest>
