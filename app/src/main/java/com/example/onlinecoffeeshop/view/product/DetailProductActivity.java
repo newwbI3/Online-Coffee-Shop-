@@ -154,8 +154,20 @@ public class DetailProductActivity extends AppCompatActivity {
                 item.setTitle(selectedProduct.getTitle());
                 item.setImageUrl(selectedProduct.getPicUrl().get(0));
                 item.setPrice(selectedProduct.getPrice());
-                favouriteController.addFavourite(item);
-                Toast.makeText(this, "Added to favourites", Toast.LENGTH_SHORT).show();
+
+                favouriteController.addFavourite(item, new FavouriteController.OnFavouriteActionListener() {
+                    @Override
+                    public void onSuccess(String message) {
+                        Toast.makeText(DetailProductActivity.this, message, Toast.LENGTH_SHORT).show();
+                        // Update the favorite button appearance
+                        favBtn.setImageResource(R.drawable.ic_favorite);
+                    }
+
+                    @Override
+                    public void onFailure(String error) {
+                        Toast.makeText(DetailProductActivity.this, error, Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
     }

@@ -46,9 +46,25 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.FavV
             context.startActivity(intent);
         });
         holder.removeBtn.setOnClickListener(v -> {
-            controller.removeFavourite(item.getFavId());
-            list.remove(position);
-            notifyItemRemoved(position);
+            controller.removeFavourite(item.getFavId(), new FavouriteController.OnFavouriteActionListener() {
+                @Override
+                public void onSuccess(String message) {
+                    // Remove item from local list and update UI
+                    int currentPosition = holder.getAdapterPosition();
+                    if (currentPosition != RecyclerView.NO_POSITION) {
+                        list.remove(currentPosition);
+                        notifyItemRemoved(currentPosition);
+                        notifyItemRangeChanged(currentPosition, list.size());
+                    }
+                    // Show success message
+                    android.widget.Toast.makeText(context, message, android.widget.Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFailure(String error) {
+                    android.widget.Toast.makeText(context, error, android.widget.Toast.LENGTH_SHORT).show();
+                }
+            });
         });
     }
 

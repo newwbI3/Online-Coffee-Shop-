@@ -64,6 +64,22 @@ public class FavoriteActivity extends BaseActivity {
         loadFavorites();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Reload favorites when activity resumes
+        loadFavorites();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Remove listener to prevent memory leaks
+        if (favouriteController != null) {
+            favouriteController.removeListener();
+        }
+    }
+
     private void loadFavorites() {
         favouriteController.getFavourites(new ValueEventListener() {
             @Override
