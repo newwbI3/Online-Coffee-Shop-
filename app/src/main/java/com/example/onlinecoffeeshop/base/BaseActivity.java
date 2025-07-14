@@ -89,8 +89,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (intent != null) {
             intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivity(intent);
-            // Add smooth transition animation
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            // Add smooth fade transition animation
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             return true;
         }
         

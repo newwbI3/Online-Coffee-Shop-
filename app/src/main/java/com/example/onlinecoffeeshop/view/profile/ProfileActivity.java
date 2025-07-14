@@ -141,31 +141,8 @@ public class ProfileActivity extends BaseActivity {
             // Set current item as profile
             bottomNavigation.setSelectedItemId(R.id.nav_profile);
 
-            bottomNavigation.setOnItemSelectedListener(item -> {
-                int itemId = item.getItemId();
-
-                if (itemId == R.id.nav_home) {
-                    startActivity(new Intent(this, MainActivity.class));
-                    finish();
-                    return true;
-                } else if (itemId == R.id.nav_favorite) {
-                    startActivity(new Intent(this, FavoriteActivity.class));
-                    finish();
-                    return true;
-                } else if (itemId == R.id.nav_cart) {
-                    startActivity(new Intent(this, CartActivity.class));
-                    finish();
-                    return true;
-                } else if (itemId == R.id.nav_orders) {
-                    startActivity(new Intent(this, OrderHistoryActivity.class));
-                    finish();
-                    return true;
-                } else if (itemId == R.id.nav_profile) {
-                    // Already in profile, do nothing
-                    return true;
-                }
-                return false;
-            });
+            // Remove custom navigation - let BaseActivity handle navigation with fade transitions
+            // The BaseActivity already provides proper fade transitions for bottom navigation
         }
     }
 
@@ -217,7 +194,7 @@ public class ProfileActivity extends BaseActivity {
                         String roleDisplay = getRoleDisplayName(role != null ? role : "user");
                         tvRole.setText(roleDisplay);
 
-                        Toast.makeText(this, "Đã tải thông tin cá nhân", Toast.LENGTH_SHORT).show();
+                        // Profile information loaded successfully - no need for notification
 
                     } else {
                         Log.d(TAG, "No document found, creating new profile...");
