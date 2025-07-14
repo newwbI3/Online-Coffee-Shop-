@@ -112,103 +112,121 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="16dp"
+            android:paddingHorizontal="24dp">
 
+            <!-- Subtotal Row -->
             <TextView
                 android:id="@+id/subTotalPrice"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:text="Subtotal"
                 android:textColor="@color/darkBrown"
+                android:textSize="16sp"
                 android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/totalFeeTxt"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/deliveryPrice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Delivery"
-                android:textColor="@color/darkBrown"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@+id/subTotalPrice"
-                app:layout_constraintTop_toBottomOf="@+id/subTotalPrice" />
-
-            <TextView
-                android:id="@+id/totalTaxPrice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Total Tax"
-                android:textColor="@color/darkBrown"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@+id/deliveryPrice"
-                app:layout_constraintTop_toBottomOf="@+id/deliveryPrice" />
 
             <TextView
                 android:id="@+id/totalFeeTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:text="$-"
+                android:layout_marginStart="16dp"
+                android:text="$0.00"
                 android:textColor="@color/darkBrown"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Delivery Row -->
+            <TextView
+                android:id="@+id/deliveryPrice"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Delivery"
+                android:textColor="@color/darkBrown"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/deliveryTxt"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/subTotalPrice" />
 
             <TextView
                 android:id="@+id/deliveryTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="$-"
+                android:layout_marginStart="16dp"
+                android:text="$0.00"
                 android:textColor="@color/darkBrown"
+                android:textSize="16sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@+id/totalFeeTxt"
-                app:layout_constraintTop_toBottomOf="@+id/totalFeeTxt" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/deliveryPrice" />
+
+            <!-- Total Tax Row -->
+            <TextView
+                android:id="@+id/totalTaxPrice"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Total Tax"
+                android:textColor="@color/darkBrown"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/taxTxt"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/deliveryPrice" />
 
             <TextView
                 android:id="@+id/taxTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="$-"
+                android:layout_marginStart="16dp"
+                android:text="$0.00"
                 android:textColor="@color/darkBrown"
+                android:textSize="16sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@+id/deliveryTxt"
-                app:layout_constraintTop_toBottomOf="@+id/deliveryTxt" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/totalTaxPrice" />
 
+            <!-- Divider Line -->
             <View
                 android:id="@+id/view"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="1dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:background="@color/darkBrown"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/totalTaxPrice" />
 
+            <!-- Total Row (Final) -->
             <TextView
                 android:id="@+id/totalPrice"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:text="Total"
                 android:textColor="@color/darkBrown"
+                android:textSize="18sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@+id/totalTaxPrice"
+                app:layout_constraintEnd_toStartOf="@+id/totalTxt"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view" />
 
             <TextView
                 android:id="@+id/totalTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="$-"
+                android:layout_marginStart="16dp"
+                android:text="$0.00"
                 android:textColor="@color/darkBrown"
+                android:textSize="18sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@+id/taxTxt"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/totalPrice" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
