@@ -23,7 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.onlinecoffeeshop.R;
-import com.example.onlinecoffeeshop.adapter.ProductAdapter;
+import com.example.onlinecoffeeshop.adapter.ProductAdapterWithViewTypes;
 import com.example.onlinecoffeeshop.controller.ProductController;
 import com.example.onlinecoffeeshop.model.Product;
 import com.google.firebase.database.DataSnapshot;
@@ -39,6 +39,7 @@ public class ListProductActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private ProductController productController;
+    private ProductAdapterWithViewTypes productAdapter;
     private LinearLayout backBtn;
     private LinearLayout emptyStateSearch;
     private TextView tvEmptySearchTitle, tvEmptySearchSubtitle;
@@ -352,8 +353,17 @@ public class ListProductActivity extends AppCompatActivity {
             currentPageProducts = filteredProducts.subList(startIndex, endIndex);
         }
 
-        // Update RecyclerView
-        recyclerView.setAdapter(new ProductAdapter(this, currentPageProducts));
+        // Initialize adapter if it doesn't exist
+        if (productAdapter == null) {
+            productAdapter = new ProductAdapterWithViewTypes(this, currentPageProducts);
+            productAdapter.setViewType(isListView ? ProductAdapterWithViewTypes.VIEW_TYPE_LIST : ProductAdapterWithViewTypes.VIEW_TYPE_GRID);
+            recyclerView.setAdapter(productAdapter);
+        } else {
+            // Update existing adapter
+            productAdapter = new ProductAdapterWithViewTypes(this, currentPageProducts);
+            productAdapter.setViewType(isListView ? ProductAdapterWithViewTypes.VIEW_TYPE_LIST : ProductAdapterWithViewTypes.VIEW_TYPE_GRID);
+            recyclerView.setAdapter(productAdapter);
+        }
 
         // Update pagination controls
         updatePaginationControls();
@@ -361,20 +371,36 @@ public class ListProductActivity extends AppCompatActivity {
         // Show/hide empty state
         if (filteredProducts.isEmpty()) {
             recyclerView.setVisibility(View.GONE);
-            emptyStateSearch.setVisibility(View.VISIBLE);
-            paginationSection.setVisibility(View.GONE);
+            if (emptyStateSearch != null) {
+                emptyStateSearch.setVisibility(View.VISIBLE);
+            }
+            if (paginationSection != null) {
+                paginationSection.setVisibility(View.GONE);
+            }
 
             if (!currentSearchQuery.isEmpty()) {
-                tvEmptySearchTitle.setText("Không tìm thấy \"" + currentSearchQuery + "\"");
-                tvEmptySearchSubtitle.setText("Thử tìm kiếm với từ khóa khác");
+                if (tvEmptySearchTitle != null) {
+                    tvEmptySearchTitle.setText("Không tìm thấy \"" + currentSearchQuery + "\"");
+                }
+                if (tvEmptySearchSubtitle != null) {
+                    tvEmptySearchSubtitle.setText("Thử tìm kiếm với từ khóa khác");
+                }
             } else {
-                tvEmptySearchTitle.setText("Không có sản phẩm");
-                tvEmptySearchSubtitle.setText("Danh mục này chưa có sản phẩm nào");
+                if (tvEmptySearchTitle != null) {
+                    tvEmptySearchTitle.setText("Không có sản phẩm");
+                }
+                if (tvEmptySearchSubtitle != null) {
+                    tvEmptySearchSubtitle.setText("Danh mục này chưa có sản phẩm nào");
+                }
             }
         } else {
             recyclerView.setVisibility(View.VISIBLE);
-            emptyStateSearch.setVisibility(View.GONE);
-            paginationSection.setVisibility(totalPages > 1 ? View.VISIBLE : View.GONE);
+            if (emptyStateSearch != null) {
+                emptyStateSearch.setVisibility(View.GONE);
+            }
+            if (paginationSection != null) {
+                paginationSection.setVisibility(totalPages > 1 ? View.VISIBLE : View.GONE);
+            }
         }
     }
 
@@ -410,11 +436,21 @@ public class ListProductActivity extends AppCompatActivity {
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
             listViewBtn.setAlpha(1.0f);
             gridViewBtn.setAlpha(0.5f);
+            listViewBtn.setSelected(true);
+            gridViewBtn.setSelected(false);
         } else {
             recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
             listViewBtn.setAlpha(0.5f);
             gridViewBtn.setAlpha(1.0f);
+            listViewBtn.setSelected(false);
+            gridViewBtn.setSelected(true);
         }
+
+        // Update adapter with new view type
+        if (productAdapter != null) {
+            productAdapter.setViewType(isListView ? ProductAdapterWithViewTypes.VIEW_TYPE_LIST : ProductAdapterWithViewTypes.VIEW_TYPE_GRID);
+        }
+        updateProductDisplay();
     }
 
     private void setItemsPerPage(int itemsPerPage) {

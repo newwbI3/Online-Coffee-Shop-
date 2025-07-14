@@ -6,62 +6,58 @@
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     android:background="@drawable/white_bg"
-    android:padding="12dp"
-    android:minHeight="120dp">
+    android:padding="12dp">
 
-    <!-- Product Image on the right side -->
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imageView9"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="12dp"
+        android:layout_width="0dp"
+        android:layout_height="120dp"
+        android:layout_marginBottom="8dp"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:shapeAppearanceOverlay="@style/CircleImageView"
+        app:shapeAppearanceOverlay="@style/RoundedCornerImageView"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
-    <!-- Product Title -->
     <TextView
         android:id="@+id/titleTxt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="12dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="4dp"
         android:ellipsize="end"
         android:maxLines="2"
         android:text="Product Title"
         android:textColor="@color/darkBrown"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/imageView9"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView9" />
 
-    <!-- Rating Bar -->
     <RatingBar
         android:id="@+id/ratingBarList"
         style="@style/Widget.AppCompat.RatingBar.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
         android:progressTint="@color/darkBrown"
         android:rating="4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleTxt" />
 
-    <!-- Product Price -->
     <TextView
         android:id="@+id/priceTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:text="$-"
         android:textColor="@color/darkBrown"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ratingBarList"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/ratingBarList" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
