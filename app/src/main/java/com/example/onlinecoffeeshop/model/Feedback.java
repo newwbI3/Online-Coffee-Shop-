@@ -130,4 +130,15 @@ public class Feedback implements Parcelable {
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }
+
+    // Helper methods for UserFeedbackAdapter
+    public String getFeedbackText() {
+        return comment;
+    }
+
+    public String getProductName() {
+        // This would need to be fetched from product collection using productId
+        // For now, return null - can be enhanced later
+        return null;
+    }
 }
