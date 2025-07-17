@@ -40,8 +40,23 @@ public class RoleAuthenticator {
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
                         String role = documentSnapshot.getString("role");
-                        Log.d(TAG, "User role: " + role);
-                        
+                        Boolean isBan = documentSnapshot.getBoolean("isBan");
+
+                        Log.d(TAG, "User role: " + role + ", isBan: " + isBan);
+
+                        // Check if user is banned
+                        if (isBan != null && isBan) {
+                            Log.w(TAG, "User is banned, redirecting to login");
+                            // Sign out banned user
+                            FirebaseAuth.getInstance().signOut();
+                            navigateToLogin(currentActivity);
+                            // Show ban message
+                            android.widget.Toast.makeText(currentActivity,
+                                "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ admin.",
+                                android.widget.Toast.LENGTH_LONG).show();
+                            return;
+                        }
+
                         navigateBasedOnRole(currentActivity, role);
                     } else {
                         Log.e(TAG, "User document not found");

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="4dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="2dp"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Header with rating and timestamp -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp">
+
+            <RatingBar
+                android:id="@+id/ratingBar"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="5"
+                android:stepSize="1"
+                android:isIndicator="true"
+                android:progressTint="@color/darkBrown"
+                android:layout_gravity="center_vertical" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/tvTimestamp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="01/01/2024 10:30"
+                android:textSize="12sp"
+                android:textColor="@color/grey"
+                android:layout_gravity="center_vertical" />
+
+        </LinearLayout>
+
+        <!-- Product name (if available) -->
+        <TextView
+            android:id="@+id/tvProductName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sản phẩm: Cà phê đen"
+            android:textSize="12sp"
+            android:textColor="@color/darkBrown"
+            android:textStyle="italic"
+            android:layout_marginBottom="8dp"
+            android:visibility="gone" />
+
+        <!-- Feedback content -->
+        <TextView
+            android:id="@+id/tvFeedbackText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nội dung feedback của user..."
+            android:textSize="14sp"
+            android:textColor="@color/darkBrown"
+            android:lineSpacingExtra="2dp" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

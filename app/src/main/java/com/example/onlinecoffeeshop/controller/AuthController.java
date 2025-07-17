@@ -43,6 +43,7 @@ public class AuthController {
                             userData.put("address", user.getAddress());
                             userData.put("dob", user.getDob());
                             userData.put("role", user.getRole() != null ? user.getRole() : "user");
+                            userData.put("isBan", false); // Default not banned
                             // Only save avatar if it's not empty
                             if (user.getAvatar() != null && !user.getAvatar().trim().isEmpty()) {
                                 userData.put("avatar", user.getAvatar());

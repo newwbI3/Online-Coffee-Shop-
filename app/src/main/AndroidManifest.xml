@@ -21,6 +21,12 @@
             android:name=".view.admin.ChartActivity"
             android:exported="false" />
         <activity
+            android:name=".view.admin.UserManagementActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.admin.UserDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.order.CheckoutActivity"
             android:exported="false" />
         <activity

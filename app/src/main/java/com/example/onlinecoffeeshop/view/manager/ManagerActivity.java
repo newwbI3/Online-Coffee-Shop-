@@ -88,8 +88,8 @@ public class ManagerActivity extends BaseActivity {
         });
         
         cardUserManagement.setOnClickListener(v -> {
-            Toast.makeText(this, "Quản lý người dùng", Toast.LENGTH_SHORT).show();
-            // TODO: Navigate to UserManagementActivity
+            Intent intent = new Intent(ManagerActivity.this, com.example.onlinecoffeeshop.view.admin.UserManagementActivity.class);
+            startActivity(intent);
         });
         
         cardReports.setOnClickListener(v -> {
