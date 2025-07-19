@@ -10,6 +10,9 @@ public class User {
     @PropertyName("uid")
     private String uid;
 
+    // Document ID from Firestore (not stored in document)
+    private String userId;
+
     @PropertyName("fullname")
     private String fullname;
 
@@ -28,11 +31,15 @@ public class User {
     @PropertyName("role")
     private String role;
 
+    @PropertyName("isBan")
+    private boolean isBan;
+
     @PropertyName("email")
     private String email;
 
     // Default constructor required for Firestore
     public User() {
+        this.isBan = false; // Default not banned
     }
 
     public User(String uid, String fullname, String dob, String avatar, String address, String phone, String role, String email) {
@@ -44,6 +51,7 @@ public class User {
         this.phone = phone;
         this.role = role != null && VALID_ROLES.contains(role.toLowerCase()) ? role.toLowerCase() : "user";
         this.email = email;
+        this.isBan = false; // Default not banned
     }
 
     // Constructor without uid (for creating new users)
@@ -55,6 +63,7 @@ public class User {
         this.phone = phone;
         this.role = role != null && VALID_ROLES.contains(role.toLowerCase()) ? role.toLowerCase() : "user";
         this.email = email;
+        this.isBan = false; // Default not banned
     }
 
     public User(String userId, String fullName, String phone, String email, String address) {
@@ -63,6 +72,7 @@ public class User {
         this.phone = phone;
         this.email = email;
         this.address = address;
+        this.isBan = false; // Default not banned
     }
 
     public String getUid() {
@@ -115,6 +125,22 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public boolean isBan() {
+        return isBan;
+    }
+
+    public void setBan(boolean ban) {
+        isBan = ban;
     }
 
     // Utility methods

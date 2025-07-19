@@ -13,12 +13,15 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
+import com.example.onlinecoffeeshop.MainActivity;
 import com.example.onlinecoffeeshop.R;
 import com.example.onlinecoffeeshop.base.BaseActivity;
 import com.example.onlinecoffeeshop.controller.AuthController;
 import com.example.onlinecoffeeshop.model.User;
 import com.example.onlinecoffeeshop.view.admin.AdminProductActivity;
+import com.example.onlinecoffeeshop.view.admin.ChartActivity;
 import com.example.onlinecoffeeshop.view.auth.LoginActivity;
+import com.example.onlinecoffeeshop.view.product.ListProductActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -85,13 +88,15 @@ public class ManagerActivity extends BaseActivity {
         });
         
         cardUserManagement.setOnClickListener(v -> {
-            Toast.makeText(this, "Quản lý người dùng", Toast.LENGTH_SHORT).show();
-            // TODO: Navigate to UserManagementActivity
+            Intent intent = new Intent(ManagerActivity.this, com.example.onlinecoffeeshop.view.admin.UserManagementActivity.class);
+            startActivity(intent);
         });
         
         cardReports.setOnClickListener(v -> {
             Toast.makeText(this, "Báo cáo thống kê", Toast.LENGTH_SHORT).show();
             // TODO: Navigate to ReportsActivity
+            Intent intent = new Intent(ManagerActivity.this, ChartActivity.class);
+            startActivity(intent);
         });
     }
     
