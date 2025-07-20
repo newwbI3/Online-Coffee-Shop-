@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_status_summary"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true"
+    android:padding="8dp">
+
+    <LinearLayout
+        android:id="@+id/status_summary_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button android:id="@+id/btn_all" android:text="Tất cả" style="@style/StatusFilterButton"/>
+        <Button android:id="@+id/btn_processing" android:text="Đang xử lý" style="@style/StatusFilterButton"/>
+        <Button android:id="@+id/btn_shipping" android:text="Đang giao" style="@style/StatusFilterButton"/>
+        <Button android:id="@+id/btn_delivered" android:text="Đã giao" style="@style/StatusFilterButton"/>
+        <Button android:id="@+id/btn_cancelled" android:text="Đã hủy" style="@style/StatusFilterButton"/>
+
+    </LinearLayout>
+</HorizontalScrollView>

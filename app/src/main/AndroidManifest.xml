@@ -82,6 +82,7 @@
         <activity
             android:name=".view.order.OrderDetailActivity"
             android:theme="@style/Theme.OnlineCoffeeShop.NoActionBar" />
+        <activity android:name=".view.admin.OrderManagementActivity" android:exported="false" />
     </application>
 
 </manifest>
