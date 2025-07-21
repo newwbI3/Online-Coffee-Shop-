@@ -155,7 +155,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         switch (status.toLowerCase()) {
             case "processing":
                 return "Đang xử lý";
-            case "shipping":
+            case "deliverping":
                 return "Đang giao";
             case "delivered":
                 return "Đã giao";

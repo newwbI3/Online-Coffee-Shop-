@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.onlinecoffeeshop.R;
 
+import com.example.onlinecoffeeshop.controller.OrderController;
 import com.example.onlinecoffeeshop.model.CartItem;
 import com.example.onlinecoffeeshop.model.Order;
 import com.example.onlinecoffeeshop.view.order.OrderDetailActivity;
@@ -31,6 +32,7 @@ public class OrderManagementAdapter extends RecyclerView.Adapter<OrderManagement
 
     private Context context;
     private List<Order> orderList;
+
 
     public interface OnOrderActionListener {
         void onDeliverClicked(Order order);
@@ -101,12 +103,13 @@ public class OrderManagementAdapter extends RecyclerView.Adapter<OrderManagement
         holder.btnConfirmReceived.setVisibility(View.GONE);
 
         switch (order.getShipmentStatus()) {
-            case "Processing":
+            case "processing":
                 holder.btnDeliver.setVisibility(View.VISIBLE);
                 holder.btnCancel.setVisibility(View.VISIBLE);
                 break;
-            case "Shipping":
+            case "Delivering":
                 holder.btnConfirmReceived.setVisibility(View.VISIBLE);
+                holder.btnCancel.setVisibility(View.VISIBLE);
                 break;
         }
 
@@ -147,4 +150,17 @@ public class OrderManagementAdapter extends RecyclerView.Adapter<OrderManagement
         Log.d("Adapter", "setOrders called with: " + newOrders.size() + " items");
         notifyDataSetChanged();// Refresh RecyclerView
     }
+    public void updateOrderStatus(String orderId, String newStatus) {
+        for (int i = 0; i < orderList.size(); i++) {
+            Order order = orderList.get(i);
+            OrderController orderController =new OrderController();
+            if (order.getOrderId().equals(orderId)) {
+                order.setShipmentStatus(newStatus);
+                orderController.updateOrderStatus(order.getOrderId(), newStatus);
+                notifyItemChanged(i);
+                break;
+            }
+        }
+    }
+
 }

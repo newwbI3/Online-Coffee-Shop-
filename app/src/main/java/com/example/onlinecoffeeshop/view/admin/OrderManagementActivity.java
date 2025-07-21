@@ -37,19 +37,19 @@ public class OrderManagementActivity extends AppCompatActivity {
         orderAdapter = new OrderManagementAdapter(this, new ArrayList<>(), new OrderManagementAdapter.OnOrderActionListener() {
             @Override
             public void onDeliverClicked(Order order) {
-                // TODO: Implement your deliver logic here
+                orderAdapter.updateOrderStatus(order.getOrderId(), "Delivering");
                 Toast.makeText(OrderManagementActivity.this, "Đã gửi đơn hàng: " + order.getOrderId(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onCancelClicked(Order order) {
-                // TODO: Implement your cancel logic here
+                orderAdapter.updateOrderStatus(order.getOrderId(), "Canceled");
                 Toast.makeText(OrderManagementActivity.this, "Đã huỷ đơn hàng: " + order.getOrderId(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onConfirmReceivedClicked(Order order) {
-                // TODO: Implement your confirm received logic here
+                orderAdapter.updateOrderStatus(order.getOrderId(), "Delivered");
                 Toast.makeText(OrderManagementActivity.this, "Đã xác nhận đơn hàng: " + order.getOrderId(), Toast.LENGTH_SHORT).show();
             }
         });
