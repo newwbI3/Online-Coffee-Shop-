@@ -87,7 +87,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
         // Confirm Received Button
         String mappedStatus = mapStatus(order.getShipmentStatus());
-        if ("Đang xử lý".equals(mappedStatus) || "Đang giao".equals(mappedStatus)) {
+        if ( "Đang giao".equals(mappedStatus)) {
             holder.btnConfirmReceived.setVisibility(View.VISIBLE);
             holder.btnConfirmReceived.setOnClickListener(v -> {
                 order.setShipmentStatus("delivered");
