@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.onlinecoffeeshop.R;
-import com.example.onlinecoffeeshop.adapter.OrderAdapter;
+import com.example.onlinecoffeeshop.adapter.OrderManagementAdapter;
 import com.example.onlinecoffeeshop.controller.OrderController;
 import com.example.onlinecoffeeshop.model.Order;
 
@@ -20,10 +20,11 @@ import java.util.List;
 public class OrderManagementActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private OrderAdapter orderAdapter;
+    private OrderManagementAdapter orderAdapter;
     private List<Order> allOrders = new ArrayList<>();
 
     private Button btnAll, btnProcessing, btnShipping, btnDelivered, btnCancelled;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +34,25 @@ public class OrderManagementActivity extends AppCompatActivity {
         initViews();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        orderAdapter = new OrderAdapter(this, new ArrayList<>());
+        orderAdapter = new OrderManagementAdapter(this, new ArrayList<>(), new OrderManagementAdapter.OnOrderActionListener() {
+            @Override
+            public void onDeliverClicked(Order order) {
+                // TODO: Implement your deliver logic here
+                Toast.makeText(OrderManagementActivity.this, "Đã gửi đơn hàng: " + order.getOrderId(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancelClicked(Order order) {
+                // TODO: Implement your cancel logic here
+                Toast.makeText(OrderManagementActivity.this, "Đã huỷ đơn hàng: " + order.getOrderId(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onConfirmReceivedClicked(Order order) {
+                // TODO: Implement your confirm received logic here
+                Toast.makeText(OrderManagementActivity.this, "Đã xác nhận đơn hàng: " + order.getOrderId(), Toast.LENGTH_SHORT).show();
+            }
+        });
         recyclerView.setAdapter(orderAdapter);
 
         OrderController orderController = new OrderController();
@@ -52,6 +71,7 @@ public class OrderManagementActivity extends AppCompatActivity {
 
         setupStatusFilter();
     }
+
 
     private void initViews() {
         recyclerView = findViewById(R.id.recyclerView_orders);

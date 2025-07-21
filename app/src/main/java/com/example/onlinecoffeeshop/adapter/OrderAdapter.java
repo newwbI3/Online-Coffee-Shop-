@@ -165,10 +165,5 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
                 return status;
         }
     }
-    public void setOrders(List<Order> newOrders) {
-        this.orderList.clear();
-        this.orderList.addAll(newOrders); // ✅ Works with final lists
-        Log.d("Adapter", "setOrders called with: " + newOrders.size() + " items");
-        notifyDataSetChanged();// Refresh RecyclerView
-    }
+
 }
