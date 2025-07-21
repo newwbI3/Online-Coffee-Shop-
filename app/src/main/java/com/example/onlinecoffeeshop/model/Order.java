@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Order implements Parcelable {
-
     private String orderId;
     private String userId;
     private String fullName;
@@ -21,12 +20,16 @@ public class Order implements Parcelable {
     private double total;
     private long timestamp;
     private String shipmentStatus;
+    private List<OrderStatusUpdate> statusHistory;
 
-    public Order() {}
+    public Order() {
+        // Required empty constructor for Firebase
+    }
 
     public Order(String orderId, String userId, String fullName, String phone, String email,
                  String address, String note, String deliveryMethod, String paymentMethod,
-                 List<CartItem> items, double total, long timestamp, String shipmentStatus) {
+                 List<CartItem> items, double total, long timestamp, String shipmentStatus,
+                 List<OrderStatusUpdate> statusHistory) {
         this.orderId = orderId;
         this.userId = userId;
         this.fullName = fullName;
@@ -40,12 +43,15 @@ public class Order implements Parcelable {
         this.total = total;
         this.timestamp = timestamp;
         this.shipmentStatus = shipmentStatus;
+        this.statusHistory = statusHistory;
     }
 
     public Order(String orderId, User user, String note, String deliveryMethod,
-                 String paymentMethod, List<CartItem> items, double total, long timestamp, String shipmentStatus) {
+                 String paymentMethod, List<CartItem> items, double total, long timestamp,
+                 String shipmentStatus, List<OrderStatusUpdate> statusHistory) {
         this(orderId, user.getUid(), user.getFullname(), user.getPhone(), user.getEmail(),
-                user.getAddress(), note, deliveryMethod, paymentMethod, items, total, timestamp, shipmentStatus);
+                user.getAddress(), note, deliveryMethod, paymentMethod,
+                items, total, timestamp, shipmentStatus, statusHistory);
     }
 
     protected Order(Parcel in) {
@@ -63,23 +69,8 @@ public class Order implements Parcelable {
         total = in.readDouble();
         timestamp = in.readLong();
         shipmentStatus = in.readString();
-    }
-
-    public static final Creator<Order> CREATOR = new Creator<Order>() {
-        @Override
-        public Order createFromParcel(Parcel in) {
-            return new Order(in);
-        }
-
-        @Override
-        public Order[] newArray(int size) {
-            return new Order[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
+        statusHistory = new ArrayList<>();
+        in.readList(statusHistory, OrderStatusUpdate.class.getClassLoader());
     }
 
     @Override
@@ -97,8 +88,27 @@ public class Order implements Parcelable {
         parcel.writeDouble(total);
         parcel.writeLong(timestamp);
         parcel.writeString(shipmentStatus);
+        parcel.writeList(statusHistory);
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Order> CREATOR = new Creator<Order>() {
+        @Override
+        public Order createFromParcel(Parcel in) {
+            return new Order(in);
+        }
+
+        @Override
+        public Order[] newArray(int size) {
+            return new Order[size];
+        }
+    };
+
+    // Getters and setters
 
     public String getOrderId() {
         return orderId;
@@ -202,5 +212,13 @@ public class Order implements Parcelable {
 
     public void setShipmentStatus(String shipmentStatus) {
         this.shipmentStatus = shipmentStatus;
+    }
+
+    public List<OrderStatusUpdate> getStatusHistory() {
+        return statusHistory;
+    }
+
+    public void setStatusHistory(List<OrderStatusUpdate> statusHistory) {
+        this.statusHistory = statusHistory;
     }
 }

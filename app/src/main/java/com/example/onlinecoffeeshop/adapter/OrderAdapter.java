@@ -2,6 +2,7 @@ package com.example.onlinecoffeeshop.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import com.example.onlinecoffeeshop.model.CartItem;
 import com.example.onlinecoffeeshop.model.Order;
 import com.example.onlinecoffeeshop.view.order.FeedbackActivity;
 import com.example.onlinecoffeeshop.view.order.OrderDetailActivity;
+import com.google.gson.Gson;
 
 import java.text.NumberFormat;
 import java.util.List;
@@ -38,16 +40,14 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         this.orderController = new OrderController();
     }
 
-    // Add method to update order list
     public void updateOrderList(List<Order> newOrders) {
-        this.orderList.clear();
-        this.orderList.addAll(newOrders);
+        orderList.clear();
+        orderList.addAll(newOrders);
         notifyDataSetChanged();
     }
 
-    // Add method to add single order
     public void addOrder(Order order) {
-        this.orderList.add(0, order); // Add to beginning of list
+        orderList.add(0, order);
         notifyItemInserted(0);
     }
 
@@ -61,57 +61,58 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     @Override
     public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
         Order order = orderList.get(position);
+        if (order == null) return;
 
         holder.tvOrderTotal.setText("Tổng tiền: " + formatCurrency(order.getTotal()));
         holder.tvOrderStatus.setText("Trạng thái: " + mapStatus(order.getShipmentStatus()));
 
-        // Clear and re-add all items
         holder.itemsContainer.removeAllViews();
-        for (CartItem item : order.getItems()) {
-            View itemView = LayoutInflater.from(context).inflate(R.layout.item_order_item, holder.itemsContainer, false);
+        if (order.getItems() != null) {
+            for (CartItem item : order.getItems()) {
+                View itemView = LayoutInflater.from(context).inflate(R.layout.item_order_item, holder.itemsContainer, false);
 
-            ImageView image = itemView.findViewById(R.id.iv_item_image);
-            TextView title = itemView.findViewById(R.id.tv_item_title);
-            TextView delivery = itemView.findViewById(R.id.tv_item_delivery);
-            TextView priceQty = itemView.findViewById(R.id.tv_item_price_quantity);
+                ImageView image = itemView.findViewById(R.id.iv_item_image);
+                TextView title = itemView.findViewById(R.id.tv_item_title);
+                TextView delivery = itemView.findViewById(R.id.tv_item_delivery);
+                TextView priceQty = itemView.findViewById(R.id.tv_item_price_quantity);
 
-            Glide.with(context).load(item.getImageUrl()).into(image);
-            title.setText(item.getTitle());
-            delivery.setText(order.getDeliveryMethod());
-            priceQty.setText("+ " + formatCurrency(item.getPrice()) + "   " + item.getQuantity() + " item(s)");
+                Glide.with(context).load(item.getImageUrl()).into(image);
+                title.setText(item.getTitle());
+                delivery.setText(order.getDeliveryMethod());
+                priceQty.setText("+ " + formatCurrency(item.getPrice()) + "   " + item.getQuantity() + " item(s)");
 
-            holder.itemsContainer.addView(itemView);
+                holder.itemsContainer.addView(itemView);
+            }
         }
 
-        // Show confirm button if order is in progress
-        String status = mapStatus(order.getShipmentStatus());
-        if ("Đang xử lý".equals(status) || "Đang giao".equals(status)) {
+        // Confirm Received Button
+        String mappedStatus = mapStatus(order.getShipmentStatus());
+        if ( "Đang giao".equals(mappedStatus)) {
             holder.btnConfirmReceived.setVisibility(View.VISIBLE);
             holder.btnConfirmReceived.setOnClickListener(v -> {
-                // Update order status both locally and in database
                 order.setShipmentStatus("delivered");
                 orderController.updateOrderStatus(order.getOrderId(), "delivered");
                 Toast.makeText(context, "Cảm ơn bạn đã xác nhận!", Toast.LENGTH_SHORT).show();
-                // Refresh this specific item
                 notifyItemChanged(position);
             });
         } else {
             holder.btnConfirmReceived.setVisibility(View.GONE);
         }
 
-        // View details button
+        // View Details Button
         holder.btnViewDetails.setOnClickListener(v -> {
-            Intent intent = new Intent(context, OrderDetailActivity.class);
-            intent.putExtra("orderId", order.getOrderId());
-            intent.putExtra("orderTotal", order.getTotal());
-            intent.putExtra("orderStatus", order.getShipmentStatus());
-            intent.putExtra("deliveryMethod", order.getDeliveryMethod());
-            context.startActivity(intent);
+            try {
+                Intent intent = new Intent(context, OrderDetailActivity.class);
+                intent.putExtra("order_json", new Gson().toJson(order)); // 👈 pass entire Order as JSON
+                context.startActivity(intent);
+            } catch (Exception e) {
+                Toast.makeText(context, "Không thể mở chi tiết đơn hàng", Toast.LENGTH_SHORT).show();
+                Log.e("OrderAdapter", "Error launching OrderDetailActivity", e);
+            }
         });
 
-        // Handle feedback button - show only for delivered orders
-        String currentStatus = mapStatus(order.getShipmentStatus());
-        if ("Đã giao".equals(currentStatus)) {
+        // Feedback Button
+        if ("Đã giao".equals(mappedStatus)) {
             holder.btnFeedback.setVisibility(View.VISIBLE);
             holder.btnFeedback.setOnClickListener(v -> {
                 Intent intent = new Intent(context, FeedbackActivity.class);
@@ -145,8 +146,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     }
 
     private String formatCurrency(double value) {
-        NumberFormat format = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
-        return format.format(value).replace("₫", "VNĐ");
+        NumberFormat format = NumberFormat.getCurrencyInstance(Locale.US);
+        return format.format(value);
     }
 
     private String mapStatus(String status) {
@@ -164,4 +165,5 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
                 return status;
         }
     }
+
 }

@@ -25,4 +25,18 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">12dp</item>
     </style>
+    <style name="StatusCategory">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#000</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+    </style>
+
+    <style name="StatusFilterButton">
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:backgroundTint">#CCCCCC</item>
+    </style>
 </resources>

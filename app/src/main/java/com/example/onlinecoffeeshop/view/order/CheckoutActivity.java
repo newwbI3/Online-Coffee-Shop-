@@ -28,6 +28,7 @@ import com.example.onlinecoffeeshop.R;
 import com.example.onlinecoffeeshop.controller.OrderController;
 import com.example.onlinecoffeeshop.model.CartItem;
 import com.example.onlinecoffeeshop.model.Order;
+import com.example.onlinecoffeeshop.model.OrderStatusUpdate;
 import com.example.onlinecoffeeshop.model.Province;
 import com.example.onlinecoffeeshop.model.ProvinceResponse;
 import com.example.onlinecoffeeshop.model.Commune;
@@ -789,6 +790,8 @@ public class CheckoutActivity extends AppCompatActivity {
         String phone = phoneEdt.getText().toString().trim();
         String email = emailEdt.getText().toString().trim();
         String note = noteEdt.getText().toString().trim();
+        List<OrderStatusUpdate> statusHistory = new ArrayList<>();
+        statusHistory.add(new OrderStatusUpdate("processing", System.currentTimeMillis()));
 
         // Handle address based on delivery method
         String completeAddress;
@@ -826,8 +829,18 @@ public class CheckoutActivity extends AppCompatActivity {
         User user = new User(userId, fullName, phone, email, completeAddress);
 
         // Create order using the correct constructor
-        Order order = new Order(orderId, user, note, deliveryMethod, paymentMethod, cartItems, totalAmount, timestamp, "processing");
-
+        Order order = new Order(
+                orderId,
+                user,
+                note,
+                deliveryMethod,
+                paymentMethod,
+                cartItems,
+                totalAmount,
+                timestamp,
+                "processing",
+                statusHistory // ✅ Add this
+        );
         OrderController orderController = new OrderController();
         orderController.createOrder(order, new OrderController.OnOrderCreatedListener() {
             @Override

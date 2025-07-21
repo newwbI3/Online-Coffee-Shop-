@@ -14,12 +14,14 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
 import com.example.onlinecoffeeshop.MainActivity;
+
 import com.example.onlinecoffeeshop.R;
 import com.example.onlinecoffeeshop.base.BaseActivity;
 import com.example.onlinecoffeeshop.controller.AuthController;
 import com.example.onlinecoffeeshop.model.User;
 import com.example.onlinecoffeeshop.view.admin.AdminProductActivity;
 import com.example.onlinecoffeeshop.view.admin.ChartActivity;
+import com.example.onlinecoffeeshop.view.admin.OrderManagementActivity;
 import com.example.onlinecoffeeshop.view.auth.LoginActivity;
 import com.example.onlinecoffeeshop.view.product.ListProductActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -81,10 +83,10 @@ public class ManagerActivity extends BaseActivity {
             Intent intent = new Intent(ManagerActivity.this, AdminProductActivity.class);
             startActivity(intent);
         });
-        
+
         cardOrderManagement.setOnClickListener(v -> {
-            Toast.makeText(this, "Quản lý đơn hàng", Toast.LENGTH_SHORT).show();
-            // TODO: Navigate to OrderManagementActivity
+            Intent intent = new Intent(ManagerActivity.this, OrderManagementActivity.class);
+            startActivity(intent);
         });
         
         cardUserManagement.setOnClickListener(v -> {
