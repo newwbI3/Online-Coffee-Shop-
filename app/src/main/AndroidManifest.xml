@@ -33,14 +33,19 @@
             android:name=".view.cart.CartActivity"
             android:exported="false" />
         <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".view.product.ListProductActivity"
             android:exported="false" />
         <activity
             android:name=".view.product.DetailProductActivity"
             android:exported="false"
-            android:theme="@style/Theme.OnlineCoffeeShop" /> <!-- Authentication Activities -->
+            android:theme="@style/Theme.OnlineCoffeeShop" />
+        <!-- Authentication Activities -->
         <activity
-            android:name=".MainActivity"
+            android:name=".IntroActivity"
             android:exported="true"
             android:theme="@style/Theme.OnlineCoffeeShop.NoActionBar">
             <intent-filter>
