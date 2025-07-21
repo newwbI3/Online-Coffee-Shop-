@@ -87,6 +87,9 @@ public class ListProductActivity extends AppCompatActivity {
         productController = new ProductController();
 
         loadProducts();
+
+        // Check if we should focus on search (coming from home screen quick action)
+        handleSearchFocus();
     }
 
     private void initializeViews() {
@@ -480,5 +483,20 @@ public class ListProductActivity extends AppCompatActivity {
         // Set default layout to list view
         isListView = true;
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    private void handleSearchFocus() {
+        boolean shouldFocusSearch = getIntent().getBooleanExtra("focusSearch", false);
+        if (shouldFocusSearch) {
+            searchEditText.requestFocus();
+            // Show keyboard
+            searchEditText.postDelayed(() -> {
+                android.view.inputmethod.InputMethodManager imm =
+                    (android.view.inputmethod.InputMethodManager) getSystemService(android.content.Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    imm.showSoftInput(searchEditText, android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT);
+                }
+            }, 100);
+        }
     }
 }
