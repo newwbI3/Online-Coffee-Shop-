@@ -37,21 +37,28 @@ public class OrderManagementActivity extends AppCompatActivity {
         orderAdapter = new OrderManagementAdapter(this, new ArrayList<>(), new OrderManagementAdapter.OnOrderActionListener() {
             @Override
             public void onDeliverClicked(Order order) {
-                // TODO: Implement your deliver logic here
+                order.setShipmentStatus("Đang giao"); // <== make sure order object is updated
+//                updateOrderInList(order);              // <== update the order in allOrders list
+                orderAdapter.updateOrderStatus(order.getOrderId(), "Đang giao");
                 Toast.makeText(OrderManagementActivity.this, "Đã gửi đơn hàng: " + order.getOrderId(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onCancelClicked(Order order) {
-                // TODO: Implement your cancel logic here
+                order.setShipmentStatus("Đã hủy");
+//                updateOrderInList(order);
+                orderAdapter.updateOrderStatus(order.getOrderId(), "Đã hủy");
                 Toast.makeText(OrderManagementActivity.this, "Đã huỷ đơn hàng: " + order.getOrderId(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onConfirmReceivedClicked(Order order) {
-                // TODO: Implement your confirm received logic here
+                order.setShipmentStatus("Đã giao");
+//                updateOrderInList(order);
+                orderAdapter.updateOrderStatus(order.getOrderId(), "Đã giao");
                 Toast.makeText(OrderManagementActivity.this, "Đã xác nhận đơn hàng: " + order.getOrderId(), Toast.LENGTH_SHORT).show();
             }
+
         });
         recyclerView.setAdapter(orderAdapter);
 
@@ -108,4 +115,15 @@ public class OrderManagementActivity extends AppCompatActivity {
         Log.d("Adapter", "setOrders called with: " + filtered.size() + " items");
         orderAdapter.setOrders(filtered);
     }
+
+//    private void updateOrderInList(Order updatedOrder) {
+//        for (int i = 0; i < allOrders.size(); i++) {
+//            Order o = allOrders.get(i);
+//            if (o.getOrderId().equals(updatedOrder.getOrderId())) {
+//                allOrders.set(i, updatedOrder); // replace with updated version
+//                break;
+//            }
+//        }
+//    }
+
 }

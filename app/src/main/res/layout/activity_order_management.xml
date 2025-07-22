@@ -74,35 +74,40 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Tất cả"
-                style="@style/StatusFilterButton" />
+                style="@style/StatusFilterButton"
+                android:backgroundTint="@color/darkBrown"/>
 
             <Button
                 android:id="@+id/btn_processing"
                 style="@style/StatusFilterButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Đang xử lý" />
+                android:text="Đang xử lý"
+                android:backgroundTint="@color/darkBrown"/>
 
             <Button
                 android:id="@+id/btn_shipping"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Đang giao"
-                style="@style/StatusFilterButton" />
+                style="@style/StatusFilterButton"
+                android:backgroundTint="@color/darkBrown"/>
 
             <Button
                 android:id="@+id/btn_delivered"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Đã giao"
-                style="@style/StatusFilterButton" />
+                style="@style/StatusFilterButton"
+                android:backgroundTint="@color/darkBrown"/>
 
             <Button
                 android:id="@+id/btn_cancelled"
                 style="@style/StatusFilterButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Đã hủy" />
+                android:text="Đã hủy"
+                android:backgroundTint="@color/darkBrown"/>
 
         </LinearLayout>
     </HorizontalScrollView>

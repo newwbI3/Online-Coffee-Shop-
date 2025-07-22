@@ -113,7 +113,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         if (status == null) return "Đang xử lý";
         switch (status.toLowerCase()) {
             case "processing": return "Đang xử lý";
-            case "shipping": return "Đang giao";
+            case "deliverng": return "Đang giao";
             case "delivered": return "Đã giao";
             case "cancelled": return "Đã hủy";
             default: return status;
