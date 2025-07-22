@@ -91,10 +91,10 @@ public class OrderManagementActivity extends AppCompatActivity {
 
     private void setupStatusFilter() {
         btnAll.setOnClickListener(v -> filterOrders("All"));
-        btnProcessing.setOnClickListener(v -> filterOrders("Processing"));
-        btnShipping.setOnClickListener(v -> filterOrders("Delivering"));
-        btnDelivered.setOnClickListener(v -> filterOrders("Delivered"));
-        btnCancelled.setOnClickListener(v -> filterOrders("Canceled"));
+        btnProcessing.setOnClickListener(v -> filterOrders("Đang xử lý"));
+        btnShipping.setOnClickListener(v -> filterOrders("Đang giao"));
+        btnDelivered.setOnClickListener(v -> filterOrders("Đã giao"));
+        btnCancelled.setOnClickListener(v -> filterOrders("Đã hủy"));
     }
 
     private void filterOrders(String status) {
