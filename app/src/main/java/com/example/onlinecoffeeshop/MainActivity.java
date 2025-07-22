@@ -3,7 +3,6 @@ package com.example.onlinecoffeeshop;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -39,12 +38,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends BaseActivity {
-    private ImageView imgBanner, searchView;
+    private ImageView imgBanner;
     private ProgressBar progressBarBanner, progressBarCat, progressBarDrink;
     private RecyclerView recyclerViewCat, recyclerViewDrinks;
     private FirebaseAuth mAuth;
-    private TextView listProductView;
-    private EditText searchEditText;
+    private TextView listProductView, greetingTxt, welcomeTxt;
+    private LinearLayout searchActionBtn;
     private HomeController controller;
     private LinearLayout cartLayout, profileLayout, favoriteLayout;
     private ValueEventListener bannerListener;
@@ -60,8 +59,8 @@ public class MainActivity extends BaseActivity {
         checkUserRoleOnStart();
 
         initView();
-
-        searchProduct();
+        setupWelcomeMessage();
+        setupQuickActions();
         loadBanner();
         loadCategories();
         loadPopularDrinks();
@@ -136,21 +135,9 @@ public class MainActivity extends BaseActivity {
         profileLayout = findViewById(R.id.layoutProfile);
         favoriteLayout = findViewById(R.id.layoutFavorite);
         mAuth = FirebaseAuth.getInstance();
-        searchEditText = findViewById(R.id.searchTxt);
-        searchView = findViewById(R.id.searchView);
-    }
-
-    private void searchProduct() {
-        searchView.setOnClickListener(v -> {
-            String query = searchEditText.getText().toString().trim();
-            if (!query.isEmpty()) {
-                Intent intent = new Intent(MainActivity.this, ListProductActivity.class);
-                intent.putExtra("searchQuery", query);
-                startActivity(intent);
-            } else {
-                Toast.makeText(MainActivity.this, "Vui lòng nhập từ khóa tìm kiếm", Toast.LENGTH_SHORT).show();
-            }
-        });
+        greetingTxt = findViewById(R.id.greetingTxt);
+        welcomeTxt = findViewById(R.id.welcomeTxt);
+        searchActionBtn = findViewById(R.id.searchActionBtn);
     }
 
     private void loadBanner() {
@@ -240,6 +227,43 @@ public class MainActivity extends BaseActivity {
                 startActivity(intent);
                 finish();
             }
+        });
+    }
+
+    private void setupWelcomeMessage() {
+        // Set dynamic greeting based on time of day
+        java.util.Calendar calendar = java.util.Calendar.getInstance();
+        int hour = calendar.get(java.util.Calendar.HOUR_OF_DAY);
+
+        String greeting;
+        if (hour < 12) {
+            greeting = "Good Morning!";
+        } else if (hour < 17) {
+            greeting = "Good Afternoon!";
+        } else {
+            greeting = "Good Evening!";
+        }
+
+        greetingTxt.setText(greeting);
+
+        // Personalize welcome message if user is logged in
+        if (mAuth.getCurrentUser() != null) {
+            String email = mAuth.getCurrentUser().getEmail();
+            if (email != null) {
+                String name = email.split("@")[0]; // Use part before @ as name
+                welcomeTxt.setText("Welcome back, " + name + "!");
+            }
+        } else {
+            welcomeTxt.setText("Welcome to Coffee Shop");
+        }
+    }
+
+    private void setupQuickActions() {
+        // Search Action - Navigate to product list with search focus
+        searchActionBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ListProductActivity.class);
+            intent.putExtra("focusSearch", true);
+            startActivity(intent);
         });
     }
 

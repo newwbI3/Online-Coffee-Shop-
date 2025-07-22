@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,7 +39,7 @@ public class ManagerActivity extends BaseActivity {
     // UI Components
     private TextView tvWelcome, tvUserInfo, tvStats;
     private CardView cardProductManagement, cardOrderManagement, cardUserManagement, cardReports;
-    
+    private Button btn_logout;
     private User currentUser;
 
     @Override
@@ -76,6 +77,7 @@ public class ManagerActivity extends BaseActivity {
         cardOrderManagement = findViewById(R.id.card_order_management);
         cardUserManagement = findViewById(R.id.card_user_management);
         cardReports = findViewById(R.id.card_reports);
+        btn_logout = findViewById(R.id.logout_btn);
     }
     
     private void setupClickListeners() {
@@ -100,6 +102,7 @@ public class ManagerActivity extends BaseActivity {
             Intent intent = new Intent(ManagerActivity.this, ChartActivity.class);
             startActivity(intent);
         });
+        btn_logout.setOnClickListener(v -> showLogoutDialog());
     }
     
     private void loadManagerData() {

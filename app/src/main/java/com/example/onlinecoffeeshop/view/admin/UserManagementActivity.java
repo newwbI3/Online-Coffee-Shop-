@@ -99,6 +99,13 @@ public class UserManagementActivity extends BaseActivity {
             performSearch();
             return true;
         });
+        
+        // Add click listener for category management button
+        Button btnCategoryManagement = findViewById(R.id.button);
+        btnCategoryManagement.setOnClickListener(v -> {
+            Intent intent = new Intent(this, CategoryManagementActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void performSearch() {

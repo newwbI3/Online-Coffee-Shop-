@@ -23,31 +23,64 @@
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="48dp"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/searchTxt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/white_bg"
-                    android:drawableStart="@drawable/search_icon"
-                    android:drawablePadding="8dp"
-                    android:ems="10"
-                    android:hint="@string/search_anything"
-                    android:inputType="text"
-                    android:padding="8dp"
-                    android:textColor="@color/darkBrown"
-                    android:textColorHint="@color/darkBrown" />
+                <!-- Welcome Section -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="16dp">
 
-                <ImageView
-                    android:id="@+id/searchView"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginStart="16dp"
-                    android:background="@drawable/dark_brow_bg"
-                    android:padding="12dp"
-                    app:srcCompat="@drawable/ic_coffee_logo" />
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/greetingTxt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Good Morning!"
+                            android:textColor="@color/darkBrown"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/welcomeTxt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Welcome to Coffee Shop"
+                            android:textColor="@color/darkBrown"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/searchActionBtn"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="@drawable/dark_brow_bg"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:elevation="2dp"
+                        android:contentDescription="Search products">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/search_icon"
+                            app:tint="@color/white" />
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
