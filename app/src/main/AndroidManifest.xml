@@ -21,6 +21,9 @@
             android:name=".view.admin.ChartActivity"
             android:exported="false" />
         <activity
+            android:name=".view.admin.CategoryManagementActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.admin.UserManagementActivity"
             android:exported="false" />
         <activity
