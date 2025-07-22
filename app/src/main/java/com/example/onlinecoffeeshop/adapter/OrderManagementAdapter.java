@@ -103,11 +103,11 @@ public class OrderManagementAdapter extends RecyclerView.Adapter<OrderManagement
         holder.btnConfirmReceived.setVisibility(View.GONE);
 
         switch (order.getShipmentStatus()) {
-            case "processing":
+            case "Đang xử lý":
                 holder.btnDeliver.setVisibility(View.VISIBLE);
                 holder.btnCancel.setVisibility(View.VISIBLE);
                 break;
-            case "Delivering":
+            case "Đang giao":
                 holder.btnConfirmReceived.setVisibility(View.VISIBLE);
                 holder.btnCancel.setVisibility(View.VISIBLE);
                 break;
@@ -160,6 +160,7 @@ public class OrderManagementAdapter extends RecyclerView.Adapter<OrderManagement
                 notifyItemChanged(i);
                 break;
             }
+
         }
     }
 

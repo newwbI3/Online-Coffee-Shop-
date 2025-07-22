@@ -90,8 +90,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         if ( "Đang giao".equals(mappedStatus)) {
             holder.btnConfirmReceived.setVisibility(View.VISIBLE);
             holder.btnConfirmReceived.setOnClickListener(v -> {
-                order.setShipmentStatus("delivered");
-                orderController.updateOrderStatus(order.getOrderId(), "delivered");
+                order.setShipmentStatus("Đã giao");
+                orderController.updateOrderStatus(order.getOrderId(), "Đã giao");
                 Toast.makeText(context, "Cảm ơn bạn đã xác nhận!", Toast.LENGTH_SHORT).show();
                 notifyItemChanged(position);
             });
@@ -153,13 +153,13 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     private String mapStatus(String status) {
         if (status == null) return "Đang xử lý";
         switch (status.toLowerCase()) {
-            case "processing":
+            case "Đang xử lý":
                 return "Đang xử lý";
-            case "deliverping":
+            case "Đang giao":
                 return "Đang giao";
-            case "delivered":
+            case "Đã giao":
                 return "Đã giao";
-            case "cancelled":
+            case "Đã hủy":
                 return "Đã hủy";
             default:
                 return status;

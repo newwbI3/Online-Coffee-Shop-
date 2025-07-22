@@ -838,7 +838,7 @@ public class CheckoutActivity extends AppCompatActivity {
                 cartItems,
                 totalAmount,
                 timestamp,
-                "processing",
+                "Đang xử lý",
                 statusHistory // ✅ Add this
         );
         OrderController orderController = new OrderController();
