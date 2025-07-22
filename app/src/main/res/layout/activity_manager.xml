@@ -66,16 +66,6 @@
                         android:textColor="@color/grey"
                         android:layout_marginBottom="12dp" />
 
-                    <TextView
-                        android:id="@+id/tv_stats"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Thống kê hôm nay:\n• Đơn hàng mới: 0\n• Doanh thu: 0 VNĐ"
-                        android:textSize="14sp"
-                        android:textColor="@color/darkBrown"
-                        android:background="@color/lightCream"
-                        android:padding="12dp"
-                        android:layout_marginTop="8dp" />
 
                 </LinearLayout>
 

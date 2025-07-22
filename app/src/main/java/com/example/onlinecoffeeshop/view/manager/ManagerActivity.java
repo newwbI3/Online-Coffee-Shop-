@@ -71,7 +71,6 @@ public class ManagerActivity extends BaseActivity {
     private void initViews() {
         tvWelcome = findViewById(R.id.tv_welcome);
         tvUserInfo = findViewById(R.id.tv_user_info);
-        tvStats = findViewById(R.id.tv_stats);
         
         cardProductManagement = findViewById(R.id.card_product_management);
         cardOrderManagement = findViewById(R.id.card_order_management);
@@ -121,7 +120,6 @@ public class ManagerActivity extends BaseActivity {
                         currentUser = documentSnapshot.toObject(User.class);
                         if (currentUser != null) {
                             displayManagerInfo();
-                            loadStats();
                         }
                     } else {
                         Log.e(TAG, "Manager document not found");
@@ -158,15 +156,6 @@ public class ManagerActivity extends BaseActivity {
             default:
                 return "Người dùng";
         }
-    }
-    
-    private void loadStats() {
-        // TODO: Load actual statistics from Firestore
-        String statsText = "Thống kê hôm nay:\n" +
-                          "• Đơn hàng mới: 15\n" +
-                          "• Doanh thu: 2,500,000 VNĐ\n" +
-                          "• Sản phẩm bán chạy: Cà phê đen";
-        tvStats.setText(statsText);
     }
     
     @Override
